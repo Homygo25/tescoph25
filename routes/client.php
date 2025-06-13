@@ -10,6 +10,7 @@ use App\Http\Controllers\Referral\ReferralController;
 use App\Http\Controllers\RequestFund\RequestFundController;
 use App\Http\Controllers\Transferfund\TransferfundController;
 use App\Http\Controllers\Withdraw\WithdrawController;
+use App\Http\Controllers\Coupon\CouponController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -18,6 +19,7 @@ Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard'
 //package module
 Route::get('deposit', [DepositController::class, 'index'])->name('package.index');
 Route::post('postpackage', [DepositController::class, 'postDeposit']);
+Route::get('claim-coupon', [CouponController::class, 'index']);
 
 Route::get('income-history', [IncomeController::class, 'index']);
 Route::get('income-history/referal-incentives', [IncomeController::class, 'index'])->name('income-history-referal-incentives');
