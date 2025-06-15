@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('receiving_bank', function (Blueprint $table) {
-            $table->string('receiving_bank')->after('account_number'); // Adds column after 'account_number'
+            $table->string('receiving_bank')->nullable()->after('account_number'); // Allows nullable for SQLite compatibility
         });
     }
 
