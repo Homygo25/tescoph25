@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import Advance from '../../images/Advance.jpg';
 import Basic from '../../images/Basic.jpg';
 import Elite from '../../images/Elite.jpg';
+import Premium from '../../images/Premium.png';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -107,7 +108,9 @@ export default function Package() {
                                                           ? Elite
                                                           : item.package_name == 'Basic'
                                                             ? Basic
-                                                            : ''
+                                                            : item.package_name == 'Premium'
+                                                              ? Premium
+                                                              : ''
                                                 }
                                                 alt=""
                                             />

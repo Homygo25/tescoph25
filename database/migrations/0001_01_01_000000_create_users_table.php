@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string('username')->unique(); // New column (must be unique)
             $table->string('name');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('profile_image')->nullable();
@@ -31,7 +31,7 @@ return new class extends Migration
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
+            $table->string('email')->index();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
         });
