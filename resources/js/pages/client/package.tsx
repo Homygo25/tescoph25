@@ -10,7 +10,7 @@ import { toast } from 'sonner';
 import Advance from '../../images/Advance.jpg';
 import Basic from '../../images/Basic.jpg';
 import Elite from '../../images/Elite.jpg';
-import Premium from '../../images/Premium.png.png';
+import Premium from '../../images/Premium.png';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
