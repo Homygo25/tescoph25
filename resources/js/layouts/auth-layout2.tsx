@@ -15,7 +15,7 @@ export default function AuthLayout2({ children, title, description, ...props }: 
                 {/* <img
                     src="/placeholder.svg"
                     alt="Image"
-                    className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+                    className="absolute inset-0 h-full w-full object-cover"
                 /> */}
             </div>
             <div className="flex h-screen flex-col gap-4 overflow-auto p-6 md:p-10">

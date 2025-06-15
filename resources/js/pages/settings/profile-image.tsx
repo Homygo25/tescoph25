@@ -63,7 +63,7 @@ export default function ProfileImage() {
                     <div className="flex flex-col items-center justify-center gap-4">
                         <Avatar className="h-70 w-70 overflow-hidden rounded-full">
                             <AvatarImage src={previewImage} alt={auth.user.name} />
-                            <AvatarFallback className="rounded-lg bg-neutral-200 text-9xl text-black dark:bg-neutral-700 dark:text-white">
+                            <AvatarFallback className="rounded-lg bg-neutral-200 text-9xl text-black">
                                 {getInitials(auth.user.name)}
                             </AvatarFallback>
                             {/* <img src={user.profile_image} alt="Profile Preview" style={{ maxWidth: '200px' }} /> */}

@@ -41,7 +41,7 @@ export function PackageModal({ account_balance, open, selectedPackage, onSelect,
         setAmount(selectedPackage?.min_amount || ''); // Use the min_amount if available
     }, [open, selectedPackage]); // Also depend on selectedPackage
 
-    let values = { pck, paymentMode, amount };
+    const values = { pck, paymentMode, amount };
 
     function handleOpensuccess() {
         setOpensuccess(!opensuccess);
@@ -131,14 +131,14 @@ export function PackageModal({ account_balance, open, selectedPackage, onSelect,
                             <div className="flex items-center pt-4">
                                 <Badge variant="secondary" className="text-sm">
                                     <p className="mr-1 text-center font-medium">Daily Interest:</p>
-                                    {formattedNumber(amount * selectedPackage.daily_shares_rate)}
+                                    {formattedNumber(Number(amount) * selectedPackage.daily_shares_rate)}
                                 </Badge>
                             </div>
                             <div className="flex items-center pt-4">
                                 <Badge variant="secondary" className="text-sm">
                                     <p className="mr-1 text-center font-medium">Total RoI:</p>
                                     {formattedNumber(
-                                        amount * selectedPackage.daily_shares_rate * selectedPackage.effective_days + parseFloat(amount),
+                                        Number(amount) * selectedPackage.daily_shares_rate * selectedPackage.effective_days + Number(amount),
                                     )}
                                 </Badge>
                             </div>
