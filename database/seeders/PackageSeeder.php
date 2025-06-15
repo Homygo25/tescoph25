@@ -48,6 +48,17 @@ class PackageSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'package_name' => 'Premium',
+                'min_amount' => 10000000.00,
+                'max_amount' => 999999999.00,
+                'daily_shares_rate' => 0.012,
+                'available_slots' => 500,
+                'effective_days' => 180,
+                'referal_bonus_rate' => 0.05,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }
