@@ -125,7 +125,7 @@ class AdminDepositController extends Controller
         $accountBalService->addAccountBalance($refUserId, $bonusRate);
         // Log::info('Daily Interest Log', ['accountBalanceUpdate' => $logthis]);
         ReferralBonus::create([
-            'deposit_trans_id' => $newTotalInterest->id,
+            'deposit_trans_id' => $deposit_trans->id,
             'bonus_amount'  => $bonusRate,
         ]);
 
