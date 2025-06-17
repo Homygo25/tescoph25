@@ -62,6 +62,11 @@ export default function ForgotPassword({ status }: { status?: string }) {
                     <TextLink href={route('home')}>Home page</TextLink>
                 </div>
             </div>
+            <div className="mt-4 text-center">
+                <a href="/forgot-password" className="text-sm text-blue-500 hover:underline">
+                    Forgot your password?
+                </a>
+            </div>
         </AuthLayout2>
     );
 }
