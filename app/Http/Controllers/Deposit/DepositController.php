@@ -9,7 +9,6 @@ use App\Models\Package;
 use App\Models\ReceivingBank;
 use App\Models\ReferralBonus;
 use App\Models\ReferralList;
-use App\Models\User;
 use App\Services\AccountBalanceService;
 use App\Services\PackageService;
 use App\Services\TotalInterestService;
@@ -20,7 +19,6 @@ use Inertia\Inertia;
 
 class DepositController extends Controller
 {
-    //for auto creating total interest
     protected $totalInterestService;
     protected $packageService;
     protected $accountBalService;
@@ -37,42 +35,31 @@ class DepositController extends Controller
         $user = Auth::user();
         $balance = AccountBalance::where('user_id', $user->id)->first();
         Log::info('current balance', ['accountBalanceUpdate' => $balance]);
+
         return Inertia::render('client/package', [
             'receiving_bank' => ReceivingBank::all(),
             'all_package' => Package::orderBy('id', 'asc')->get(),
-            'success' => session('success'),
-            'error' => session('error'),
-            'account_balance' => $balance->balance ? $balance->balance : 0,
-
-        ]);
-    }
-
-    public function banks()
-    {
-        return Inertia::render('client/request-fund', [
-            'receiving_bank' => ReceivingBank::all(),
+            'account_balance' => $balance && isset($balance->balance) ? $balance->balance : 0,
+            'error' => \session('error'),
         ]);
     }
 
     public function postDeposit(Request $request)
     {
+        $time = \Illuminate\Support\Carbon::now()->format('H:i:s');
         $user = $request->user();
-        $time = now()->format('H:i:s');
 
         if ($request->bank_id == 0 && $request->payment_method == 1) {
-            // Retrieve the user's account balance
             $accountBalance = AccountBalance::where('user_id', $user->id)->first();
 
             if (!$accountBalance) {
-                return redirect()->back()->with('error', ['message' => 'Account balance not found.', $time]);
+                return \redirect()->back()->with('error', ['message' => 'Account balance not found.', $time]);
             }
 
-            // Check if the balance is sufficient
             if ($accountBalance->balance < $request->amount) {
-                return redirect()->back()->with('error', ['message' => 'Insufficient balance.', $time]);
+                return \redirect()->back()->with('error', ['message' => 'Insufficient balance.', $time]);
             }
 
-            // Deduct the amount from the balance
             $accountBalance->balance -= $request->amount;
             $accountBalance->save();
         }
@@ -81,14 +68,12 @@ class DepositController extends Controller
             'package_id' => $request->package_id,
             'user_id' => $user->id,
             'bank_id' => $request->bank_id,
-            'payment_method' => $request->payment_method,
             'amount' => $request->amount,
-            'status' => is_null($request->bank_id) ? 'approved' : 'pending', // Check if bank_id is null
+            'status' => $request->bank_id === null ? 'approved' : 'pending',
         ]);
 
         if ($request->bank_id == 0 && $request->payment_method == 1) {
             $accountBalService = new AccountBalanceService();
-
             $package = Package::where('id', $request->package_id)->first();
 
             $dataForTotalInterest = [
@@ -101,21 +86,21 @@ class DepositController extends Controller
                 'status' => 'active',
             ];
 
-            // $newTotalInterest = $this->totalInterestService->createTotalInterest($dataForTotalInterest);
             $this->totalInterestService->createTotalInterest($dataForTotalInterest);
-
             $this->packageService->deductSlot($package->id);
 
             $bonusRate = $package->referal_bonus_rate * $request->amount;
             $refUserId = ReferralList::where('user_id', $user->id)->first()->ref_user_id;
             $accountBalService->addAccountBalance($refUserId, $bonusRate);
-            // Log::info('Daily Interest Log', ['accountBalanceUpdate' => $logthis]);
+
             ReferralBonus::create([
                 'deposit_trans_id' => $depositTrans->id,
                 'bonus_amount'  => $bonusRate,
             ]);
+
+            return \redirect()->back()->with('success', ['message' => 'Transaction request created successfully!', $time]);
         }
 
-        return redirect()->back()->with('success', ['message' => 'Transaction request created successfully!', $time]);
+        return \redirect()->back()->with('success', ['message' => 'Transaction request created successfully!', $time]);
     }
 }

@@ -1,0 +1,15 @@
+[90m= [39m[34;4mApp\Models\Package[39;24m {#5332
+    [34mid[39m: [35m1[39m,
+    [34mpackage_name[39m: "[32mPremium Co-Partnership[39m",
+    [34mmin_amount[39m: [35m5000[39m,
+    [34mmax_amount[39m: [35m20000[39m,
+    [34mdaily_shares_rate[39m: [33m0.008[39m,
+    [34mavailable_slots[39m: [35m10[39m,
+    [34meffective_days[39m: [35m180[39m,
+    [34mreferal_bonus_rate[39m: [33m0.05[39m,
+    [34mcreated_at[39m: "[32m2025-06-21 21:39:11[39m",
+    [34mupdated_at[39m: "[32m2025-06-21 21:49:28[39m",
+    [34mimage[39m: "[32mresources/js/images/premium.png[39m",
+    [34morder[39m: [35m0[39m,
+  }
+
