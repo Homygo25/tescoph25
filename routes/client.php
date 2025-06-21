@@ -11,6 +11,7 @@ use App\Http\Controllers\RequestFund\RequestFundController;
 use App\Http\Controllers\Transferfund\TransferfundController;
 use App\Http\Controllers\Withdraw\WithdrawController;
 use App\Http\Controllers\Coupon\CouponController;
+use App\Http\Controllers\Promotion\PromotionController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -29,6 +30,9 @@ Route::get('deposit-history', [DepositHistoryController::class, 'index'])->name(
 Route::get('withdraw', [WithdrawController::class, 'index']);
 Route::post('postwithdraw', [WithdrawController::class, 'postWithdraw']);
 Route::get('withdraw-history', [WithdrawController::class, 'indexHistory'])->name('withdraw-history');
+
+// promotion page
+Route::get('promotion', [PromotionController::class, 'index'])->name('promotion');
 
 //transfer fund module
 Route::get('transfer-fund', [TransferfundController::class, 'index']);
