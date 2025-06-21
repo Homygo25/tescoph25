@@ -20,6 +20,7 @@ import {
     MailCheck,
     Package,
     Plus,
+    SmilePlus,
     Store,
     TypeOutline,
     Users,
@@ -105,6 +106,11 @@ const ClientmainNavItems: NavItem[] = [
         title: 'Request Fund',
         url: '/request-fund',
         icon: FileInput,
+    },
+    {
+        title: 'Promotion',
+        url: '/promotion',
+        icon: SmilePlus,
     },
     {
         title: 'Income History',
