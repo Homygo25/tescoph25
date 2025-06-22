@@ -121,13 +121,15 @@ class AdminDepositController extends Controller
         // $accountBalance->save();
 
         $bonusRate = $package->referal_bonus_rate * $deposit_trans->amount;
-        $refUserId = ReferralList::where('user_id', $deposit_trans->user_id)->first()->ref_user_id;
-        $accountBalService->addAccountBalance($refUserId, $bonusRate);
-        // Log::info('Daily Interest Log', ['accountBalanceUpdate' => $logthis]);
-        ReferralBonus::create([
-            'deposit_trans_id' => $deposit_trans->id,
-            'bonus_amount'  => $bonusRate,
-        ]);
+        $referral = ReferralList::where('user_id', $deposit_trans->user_id)->first();
+        if ($referral) {
+            $refUserId = $referral->ref_user_id;
+            $accountBalService->addAccountBalance($refUserId, $bonusRate);
+            ReferralBonus::create([
+                'deposit_trans_id' => $deposit_trans->id,
+                'bonus_amount' => $bonusRate,
+            ]);
+        }
 
         return back()->with('success', ['message' => 'Request approved.', $time]);
     }
