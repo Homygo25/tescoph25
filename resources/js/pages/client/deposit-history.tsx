@@ -16,10 +16,11 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function DepositHistory() {
-    const { auth, active, pending, receiving_banks } = usePage<{
+    const { auth, active, pending, receiving_banks = [] } = usePage<{
         active: ACTIVEDATATYPE[];
         pending: PENDINGDATATYPE[];
         auth: Auth;
+        receiving_banks?: any[];
     }>().props;
     console.log(receiving_banks);
 

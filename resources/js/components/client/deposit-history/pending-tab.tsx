@@ -23,9 +23,16 @@ export type PENDINGDATATYPE = {
     deposit_date: string;
     package_name: string;
     status: string;
+    payment_method: string; // Added property
+    bank_id: number;        // Added property
 };
 
-const PendingTab = ({ data, receiving_banks }: { data: PENDINGDATATYPE[] }) => {
+const PendingTab = ({ data, receiving_banks }: { data: PENDINGDATATYPE[]; receiving_banks: any[] }) => {
+    const getBankDetails = (id: number, bankList: any[]) => {
+        const bank = bankList.find((bank: any) => bank.id === id);
+        return bank ? `${bank.bank_name}: ${bank.account_number}` : 'Bank not found';
+    };
+
     const columns: ColumnDef<PENDINGDATATYPE>[] = [
         {
             accessorKey: 'package_name',
@@ -54,11 +61,6 @@ const PendingTab = ({ data, receiving_banks }: { data: PENDINGDATATYPE[] }) => {
             cell: ({ row }) => <div>{formattedNumber(row.getValue('amount'))}</div>,
         },
     ];
-
-    const getBankDetails = (id, bankList) => {
-        const bank = bankList.find((bank) => bank.id === id);
-        return bank ? `${bank.bank_name}: ${bank.account_number}` : 'Bank not found';
-    };
 
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);

@@ -11,7 +11,7 @@ import { router } from '@inertiajs/react';
 import { format } from 'date-fns';
 import { FormEvent } from 'react';
 import { Separator } from '../../ui/separator';
-import { FINALVALUES } from './PackageModal';
+import type { FINALVALUES } from './PackageModal';
 
 interface PackageModalProps {
   open: boolean;
@@ -65,7 +65,7 @@ export function PaymentSuccessfulModal({
             <div className="flex justify-between">
               <p>Package</p>
               <p className="font-medium">
-                {finalValues?.pck?.package_name}
+                {finalValues?.pck?.package_name ?? ''}
               </p>
             </div>
             <Separator className="my-2" />

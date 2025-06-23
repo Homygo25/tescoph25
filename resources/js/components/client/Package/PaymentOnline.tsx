@@ -4,9 +4,9 @@ import { ReceivingBank } from '@/pages/client/package';
 import { formattedNumber, formattedNumberPH } from '@/utils/utils';
 import { router } from '@inertiajs/core';
 import { FormEvent, useEffect, useState } from 'react';
-import { ScrollArea } from '../../ui/scroll-area';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { FINALVALUES } from './PackageModal';
+import type { FINALVALUES } from './PackageModal';
 
 interface PackageModalProps {
     open: boolean;
@@ -18,7 +18,6 @@ interface PackageModalProps {
 export function PaymentOnline({ open, finalValues, onOpen, receiving_bank }: PackageModalProps) {
     const [exchangeRate, setExchangeRate] = useState<number>();
     const [exchangeUpdate, setExchangeUpdate] = useState(null);
-    const [error, setError] = useState(null);
     console.log('finalValues', finalValues);
     useEffect(() => {
         const fetchExchangeRate = async () => {
