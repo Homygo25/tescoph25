@@ -65,12 +65,14 @@ class DepositController extends Controller
         }
 
         $depositTrans = DepositPackageTransac::create([
-            'package_id' => $request->package_id,
-            'user_id' => $user->id,
-            'bank_id' => $request->bank_id,
-            'amount' => $request->amount,
-            'status' => $request->bank_id === null ? 'approved' : 'pending',
-        ]);
+    'package_id' => $request->package_id,
+    'user_id' => $user->id,
+    'bank_id' => $request->bank_id,
+    'payment_method' => $request->payment_method, // ✅ add this line
+    'amount' => $request->amount,
+    'status' => $request->bank_id === null ? 'approved' : 'pending',
+]);
+
 
         if ($request->bank_id == 0 && $request->payment_method == 1) {
             $accountBalService = new AccountBalanceService();
@@ -89,14 +91,18 @@ class DepositController extends Controller
             $this->totalInterestService->createTotalInterest($dataForTotalInterest);
             $this->packageService->deductSlot($package->id);
 
-            $bonusRate = $package->referal_bonus_rate * $request->amount;
-            $refUserId = ReferralList::where('user_id', $user->id)->first()->ref_user_id;
-            $accountBalService->addAccountBalance($refUserId, $bonusRate);
+            $bonusRate = 0;
+            $referralList = ReferralList::where('user_id', $user->id)->first();
+            if ($package && $referralList && isset($package->referal_bonus_rate) && isset($referralList->ref_user_id)) {
+                $bonusRate = $package->referal_bonus_rate * $request->amount;
+                $refUserId = $referralList->ref_user_id;
+                $accountBalService->addAccountBalance($refUserId, $bonusRate);
 
-            ReferralBonus::create([
-                'deposit_trans_id' => $depositTrans->id,
-                'bonus_amount'  => $bonusRate,
-            ]);
+                ReferralBonus::create([
+                    'deposit_trans_id' => $depositTrans->id,
+                    'bonus_amount'  => $bonusRate,
+                ]);
+            }
 
             return \redirect()->back()->with('success', ['message' => 'Transaction request created successfully!', $time]);
         }
