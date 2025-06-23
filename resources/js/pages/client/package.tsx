@@ -1,4 +1,4 @@
-import { PackageModal } from '@/Components/client/package/PackageModal';
+import PackageModal from '@/components/client/Package/__TEMP__'
 import { Button } from '@/components/ui/button';
 import { Card, CardFooter, CardHeader } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
