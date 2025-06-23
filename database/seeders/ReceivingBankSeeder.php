@@ -14,7 +14,7 @@ class ReceivingBankSeeder extends Seeder
     public function run(): void
     {
         //
-        ReceivingBank::insert([
+        ReceivingBank::updateOrInsert(
             [
                 'bank_name' => 'BPI',
                 'receiving_bank' => 'Bank of the Philippine Islands/ BPI Savings',
