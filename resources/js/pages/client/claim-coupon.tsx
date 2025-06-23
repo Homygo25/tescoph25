@@ -18,6 +18,7 @@ interface PageProps {
     success?: { message: string };
     error?: { message: string };
     auth: Auth;
+    [key: string]: unknown;
 }
 
 export default function ClaimCoupon() {

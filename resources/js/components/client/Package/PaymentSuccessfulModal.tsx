@@ -74,7 +74,7 @@ export function PaymentSuccessfulModal({
             <div className="flex justify-between">
               <p>Amount</p>
               <p className="font-medium">
-                {formattedNumber(finalValues?.amount)}
+                {formattedNumber(Number(finalValues?.amount) || 0)}
               </p>
             </div>
             <Separator className="my-2" />

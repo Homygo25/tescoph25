@@ -1,16 +1,16 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ReceivingBank } from '@/Pages/client/package';
+import { ReceivingBank } from '@/pages/client/package';
 import { formattedNumber, formattedNumberPH } from '@/utils/utils';
 import { router } from '@inertiajs/core';
 import { FormEvent, useEffect, useState } from 'react';
 import { ScrollArea } from '../../ui/scroll-area';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { FINALVALUES } from './PackageModal';
 
 interface PackageModalProps {
     open: boolean;
-    onOpen: () => void;
+    onOpen: (open: boolean) => void;
     finalValues: FINALVALUES | undefined;
     receiving_bank: ReceivingBank[];
 }
@@ -51,7 +51,7 @@ export function PaymentOnline({ open, finalValues, onOpen, receiving_bank }: Pac
             payment_method: finalValues?.paymentMode, // From useState
             amount: finalValues?.amount, // From useState
         });
-        onOpen();
+        onOpen(false);
     };
 
     return (
@@ -152,3 +152,6 @@ export function PaymentOnline({ open, finalValues, onOpen, receiving_bank }: Pac
         </Dialog>
     );
 }
+
+
+
