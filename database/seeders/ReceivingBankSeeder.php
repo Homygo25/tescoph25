@@ -20,7 +20,7 @@ class ReceivingBankSeeder extends Seeder
                 'receiving_bank' => 'Bank of the Philippine Islands/ BPI Savings',
                 'payment_channel' => 'Bank Transfer - Instapay',
                 'account_name' => 'Tesco Supermart Incoporation',
-                'account_number' => '4016352729 ',
+                'account_number' => '4006890693 ',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
