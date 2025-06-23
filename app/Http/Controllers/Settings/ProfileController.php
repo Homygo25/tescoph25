@@ -23,7 +23,8 @@ class ProfileController extends Controller
     public function edit(Request $request): Response
     {
         $user = Auth::user();
-        $referral_used = ReferralList::where('user_id', $user->id)->first()->ref_user_username;
+        $referral = ReferralList::where('user_id', $user->id)->first();
+        $referral_used = $referral?->ref_user_username;
 
         return Inertia::render('settings/profile', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
