@@ -38,7 +38,7 @@ class PackageSeeder extends Seeder
                 'min_amount' => 5000.00,
                 'max_amount' => 9999.00,
                 'daily_shares_rate' => 0.008,
-                'available_slots' => 100,
+                'available_slots' => 30,
                 'effective_days' => 180,
                 'referal_bonus_rate' => 0.05,
                 'sort_order' => 3,
