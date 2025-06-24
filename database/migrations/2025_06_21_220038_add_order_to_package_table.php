@@ -9,17 +9,20 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
-{
-    Schema::table('package', function (Blueprint $table) {
-        $table->integer('order')->default(0)->after('image');
-    });
-}
+    public function up(): void
+    {
+        Schema::table('package', function (Blueprint $table) {
+            $table->integer('sort_order')->default(0)->after('image');
+        });
+    }
 
-public function down()
-{
-    Schema::table('package', function (Blueprint $table) {
-        $table->dropColumn('order');
-    });
-}
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('package', function (Blueprint $table) {
+            $table->dropColumn('sort_order');
+        });
+    }
 };
