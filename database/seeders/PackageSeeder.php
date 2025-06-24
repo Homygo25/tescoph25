@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Package;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class PackageSeeder extends Seeder
@@ -13,7 +12,7 @@ class PackageSeeder extends Seeder
      */
     public function run(): void
     {
-        Package::insert([
+        $packages = [
             [
                 'package_name' => 'Basic',
                 'min_amount' => 200.00,
@@ -23,8 +22,6 @@ class PackageSeeder extends Seeder
                 'effective_days' => 180,
                 'referal_bonus_rate' => 0.05,
                 'sort_order' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'package_name' => 'Advance',
@@ -35,8 +32,6 @@ class PackageSeeder extends Seeder
                 'effective_days' => 180,
                 'referal_bonus_rate' => 0.05,
                 'sort_order' => 2,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'package_name' => 'Premium',
@@ -47,8 +42,6 @@ class PackageSeeder extends Seeder
                 'effective_days' => 180,
                 'referal_bonus_rate' => 0.05,
                 'sort_order' => 3,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'package_name' => 'Elite',
@@ -59,9 +52,16 @@ class PackageSeeder extends Seeder
                 'effective_days' => 180,
                 'referal_bonus_rate' => 0.05,
                 'sort_order' => 4,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
-        ]);
+        ];
+
+        foreach ($packages as $data) {
+            Package::updateOrCreate(
+                ['package_name' => $data['package_name']],
+                array_merge($data, [
+                    'updated_at' => now(),
+                ])
+            );
+        }
     }
 }
