@@ -21,9 +21,10 @@ class AdminTransferFundsController extends Controller
             'b.name as sender',
             'c.name as receiver',
             'a.created_at as date',
-           
+
         )
         // ->where('a.status', 'approved') // Uncomment if you want to add a filter for user status
+        ->orderByDesc('a.created_at')
         ->get();
 
     return Inertia::render('admin/admin-transfer-funds', [
