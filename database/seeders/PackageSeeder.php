@@ -37,7 +37,7 @@ class PackageSeeder extends Seeder
                 'package_name' => 'Premium',
                 'min_amount' => 5000.00,
                 'max_amount' => 9999.00,
-                'daily_shares_rate' => 0.008,
+                'daily_shares_rate' => 0.000,
                 'available_slots' => 30,
                 'effective_days' => 180,
                 'referal_bonus_rate' => 0.05,
