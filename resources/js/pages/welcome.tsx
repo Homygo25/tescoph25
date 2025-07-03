@@ -4,9 +4,8 @@ import { Dialog, DialogPanel } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Link, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import bgImage from '../images/1.jpg';
-import video1 from '../images/welcome_video.mp4';
-import Tescologo from './tescologo';
+import bgImage from '../images/cvs-pharmacy-bg.png';
+import CVSLogo from './cvslogo';
 
 const navigation = [
     { name: 'Home', href: '#' },
@@ -39,22 +38,25 @@ export default function Welcome() {
     }, [ref]);
     //yawa
     return (
-        <div style={{ backgroundImage: `url(${bgImage})` }} className="h-screen overflow-hidden bg-cover bg-center bg-no-repeat">
+        <div style={{ backgroundImage: `url(${bgImage})` }} className="h-screen overflow-hidden bg-cover bg-center bg-no-repeat relative">
+            {/* Red overlay */}
+            <div className="absolute inset-0 bg-red-600 bg-opacity-70 z-0"></div>
+            
             {/* <header className="sticky inset-x-0 top-0 z-50 bg-gradient-to-b from-white from-10% via-white via-80% to-transparent to-100% pb-4"> */}
-            <header className="sticky inset-x-0 top-0 z-50 bg-white">
+            <header className="sticky inset-x-0 top-0 z-50 bg-transparent">
                 <nav aria-label="Global" className="flex items-center justify-between p-4 lg:px-8">
                     <div className="flex lg:flex-1">
                         <a href="#" className="-m-1.5 p-1.5">
-                            <span className="sr-only">Your Company</span>
+                            <span className="sr-only">CVS Pharmacy</span>
                             {/* <img alt="" src={tescoLogo} className="h-auto w-32" /> */}
-                            <Tescologo />
+                            <CVSLogo />
                         </a>
                     </div>
                     <div className="flex lg:hidden">
                         <button
                             type="button"
                             onClick={() => setMobileMenuOpen(true)}
-                            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+                            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white"
                         >
                             <span className="sr-only">Open main menu</span>
                             <Bars3Icon aria-hidden="true" className="size-6" />
@@ -79,7 +81,7 @@ export default function Welcome() {
                         {auth.user ? (
                             <Link
                                 href={auth.user.role === 'admin' ? route('admin-pending-deposits') : route('dashboard')}
-                                className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                                className="inline-block rounded-sm border border-white px-5 py-1.5 text-sm leading-normal text-white hover:bg-white hover:text-red-600 transition-colors duration-200"
                             >
                                 Dashboard
                             </Link>
@@ -87,13 +89,13 @@ export default function Welcome() {
                             <>
                                 <Link
                                     href={route('login')}
-                                    className="inline-block rounded-sm border border-transparent bg-[#00539f] px-5 py-1.5 text-sm leading-normal font-bold text-[white] hover:border-[#19140035]"
+                                    className="inline-block rounded-sm border border-transparent bg-white px-5 py-1.5 text-sm leading-normal font-bold text-red-600 hover:bg-gray-100 transition-colors duration-200"
                                 >
                                     Log in
                                 </Link>
                                 <Link
                                     href={route('register')}
-                                    className="inline-block rounded-sm border border-[#00539f] px-5 py-1.5 text-sm leading-normal font-bold text-[#00539f] hover:border-[#00539f]"
+                                    className="inline-block rounded-sm border border-white px-5 py-1.5 text-sm leading-normal font-bold text-white hover:bg-white hover:text-red-600 transition-colors duration-200"
                                 >
                                     Register
                                 </Link>
@@ -106,9 +108,9 @@ export default function Welcome() {
                     <DialogPanel className="fixed inset-y-0 right-0 z-50 w-1/2 overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
                         <div className="flex items-center justify-between">
                             <a href="#" className="-m-1.5 p-1.5">
-                                <span className="sr-only">Your Company</span>
+                                <span className="sr-only">CVS Pharmacy</span>
                                 {/* <img alt="" src={tescoLogo} className="h-auto w-32" /> */}
-                                <Tescologo />
+                                <CVSLogo />
                             </a>
                             <button type="button" onClick={() => setMobileMenuOpen(false)} className="-m-2.5 rounded-md p-2.5 text-gray-700">
                                 <span className="sr-only">Close menu</span>
@@ -160,25 +162,35 @@ export default function Welcome() {
                 </Dialog>
             </header>
 
-            <div className="relative isolate h-[100vh] overflow-auto px-6 pb-52 lg:px-8">
-                <div className="mx-auto my-5 flex max-w-5xl flex-col gap-15 rounded-lg bg-white/90 p-8 py-7 shadow-lg backdrop-blur-md lg:flex-row">
-                    <video autoPlay loop muted controls className="collapse h-0 w-2xl overflow-hidden rounded-xl md:visible md:h-auto lg:mt-2">
-                        <source src={video1} type="video/mp4" />
-                        Your browser does not support the video tag.
-                    </video>
-                    <div className="lg:pt-10">
-                        <p className="text-center text-6xl font-semibold tracking-tight text-balance text-gray-900 sm:text-6xl md:text-left">
-                            We invest in <span className="text-red-500">unlocking</span> the world's possibilities.
-                        </p>
-                        <p className="text-md mt-8 text-center font-medium text-pretty text-gray-500 sm:text-xl/8 lg:text-left">
-                            At Tesco Ph, we concentrate on markets where technology, innovation, and capital have the potential to unlock long-term
-                            value and stimulate economic growth.
-                        </p>
-                        <div className="mt-4 mt-5 flex items-center justify-center gap-2 md:justify-start">
+            <div className="relative isolate h-[100vh] overflow-auto px-6 pb-52 lg:px-8 z-10">
+                <div className="mx-auto my-16 flex max-w-md justify-center">
+                    <div className="w-full max-w-sm rounded-xl bg-white p-8 shadow-2xl border border-gray-200">
+                        {/* CVS Logo */}
+                        <div className="flex justify-center mb-6">
+                            <div className="text-center">
+                                {/* CVS Logo Text */}
+                                <div className="mb-4">
+                                    <span className="text-4xl font-bold text-red-600">CVS</span>
+                                    <br />
+                                    <span className="text-lg font-semibold text-red-600">pharmacy</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {/* Tagline */}
+                        <div className="text-center mb-8">
+                            <h2 className="text-red-600 font-bold text-lg leading-tight">
+                                First Drive-Thru Pharmacy In<br />
+                                the Philippines
+                            </h2>
+                        </div>
+                        
+                        {/* Buttons */}
+                        <div className="flex gap-4">
                             {auth.user ? (
                                 <Link
                                     href={auth.user.role === 'admin' ? route('admin-dashboard') : route('dashboard')}
-                                    className="inline-block rounded-sm border border-transparent bg-[#00539f] px-5 py-1.5 text-lg leading-normal font-bold text-[white] hover:border-[#19140035]"
+                                    className="flex-1 block text-center rounded-lg bg-red-600 px-6 py-3 text-sm font-semibold text-white hover:bg-red-700 transition-colors duration-200"
                                 >
                                     Dashboard
                                 </Link>
@@ -186,34 +198,20 @@ export default function Welcome() {
                                 <>
                                     <Link
                                         href={route('login')}
-                                        className="inline-block rounded-sm border border-transparent bg-[#00539f] px-5 py-1.5 text-lg leading-normal font-bold text-[white] hover:border-[#19140035]"
+                                        className="flex-1 block text-center rounded-lg bg-red-600 px-6 py-3 text-sm font-semibold text-white hover:bg-red-700 transition-colors duration-200"
                                     >
-                                        Log in
+                                        Log In
                                     </Link>
                                     <Link
                                         href={route('register')}
-                                        className="inline-block rounded-sm border border-[#00539f] px-5 py-1.5 text-lg leading-normal font-bold text-[#00539f] hover:border-[#00539f]"
+                                        className="flex-1 block text-center rounded-lg bg-red-600 px-6 py-3 text-sm font-semibold text-white hover:bg-red-700 transition-colors duration-200"
                                     >
-                                        Register
+                                        Sign up
                                     </Link>
                                 </>
                             )}
                         </div>
-                        <div className="mt-10 flex justify-center gap-10 md:justify-start">
-                            <div>
-                                <p className="text-md font-black text-pretty text-red-500 sm:text-xl/8">10,000 +</p>
-                                <p className="text-md sm:text-md/8 font-medium text-pretty text-gray-500">Satisfied Investors</p>
-                            </div>
-                            <div>
-                                <p className="text-md font-black text-pretty text-blue-500 sm:text-xl/8">100,000 +</p>
-                                <p className="text-md sm:text-md/8 font-medium text-pretty text-gray-500">Successful Transactions</p>
-                            </div>
-                        </div>
                     </div>
-                    <video autoPlay loop muted controls className="visible flex h-auto w-sm overflow-hidden rounded-xl md:hidden md:h-0 lg:mt-2">
-                        <source src={video1} type="video/mp4" />
-                        Your browser does not support the video tag.
-                    </video>
                 </div>
             </div>
         </div>

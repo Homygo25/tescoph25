@@ -1,6 +1,6 @@
 import { Link } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
-import bgImage from '../images/1.jpg';
+import bgImage from '../images/cvs-pharmacy-bg.png';
 
 export default function AuthLayout2({ children, title, description, ...props }: { children: React.ReactNode; title: string; description: string }) {
     return (

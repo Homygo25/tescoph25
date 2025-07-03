@@ -8,7 +8,12 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.tsx'],
+            input: [
+                'resources/css/app.css', 
+                'resources/css/performance.css', 
+                'resources/css/animations.css',
+                'resources/js/app.tsx'
+            ],
             ssr: 'resources/js/ssr.jsx',
             refresh: true,
         }),
@@ -18,4 +23,25 @@ export default defineConfig({
     esbuild: {
         jsx: 'automatic',
     },
+    css: {
+        devSourcemap: true,
+        preprocessorOptions: {
+            css: {
+                charset: false
+            }
+        }
+    },
+    build: {
+        cssCodeSplit: true,
+        rollupOptions: {
+            output: {
+                assetFileNames: (assetInfo) => {
+                    if (assetInfo.name?.endsWith('.css')) {
+                        return 'assets/[name]-[hash][extname]';
+                    }
+                    return 'assets/[name]-[hash][extname]';
+                }
+            }
+        }
+    }
 });

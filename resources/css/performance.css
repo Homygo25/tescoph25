@@ -1,0 +1,144 @@
+/* Performance and Browser Compatibility Optimizations */
+
+/* Base optimizations */
+*,
+*::before,
+*::after {
+  /* Reset will-change to avoid unnecessary layers */
+  will-change: auto;
+}
+
+/* Cross-browser text size adjustment support */
+html {
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+/* Improve text rendering and font smoothing */
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern" 1;
+}
+
+/* Optimize animations for better performance */
+@media (prefers-reduced-motion: no-preference) {
+  .animate-spin,
+  .animate-pulse,
+  .animate-bounce,
+  [class*="animate-"] {
+    will-change: transform;
+  }
+  
+  .animate-spin:not(:hover):not(:focus):not(:active) {
+    will-change: auto;
+  }
+}
+
+/* GPU-accelerated animations to avoid paint triggers */
+@keyframes performance-optimized-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes performance-optimized-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes performance-optimized-bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+/* Optimize transform animations */
+.optimized-transform {
+  transform: translateZ(0); /* Force hardware acceleration */
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus improvements for accessibility */
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Smooth scrolling with performance consideration */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Container query polyfill support */
+@supports not (container-type: inline-size) {
+  .container-queries-fallback {
+    /* Use flexbox as fallback for container queries */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}
+
+/* Viewport units fix for mobile browsers */
+.full-height {
+  height: 100vh;
+  height: 100dvh; /* Dynamic viewport height for modern browsers */
+}
+
+/* Optimize images and media */
+img,
+video,
+picture,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Optimize loading of images */
+img[loading="lazy"] {
+  content-visibility: auto;
+}
+
+/* Print optimizations */
+@media print {
+  *,
+  *::before,
+  *::after {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+}

@@ -8,10 +8,9 @@ import { CircleCheck } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
-import Advance from '../../images/Advance.jpg';
-import Basic from '../../images/Basic.jpg';
-import Elite from '../../images/Elite.jpg';
-import Premium from '../../images/premium.png';
+import CVSPackage1 from '../../images/CVS-Package-1.png';
+import CVSPackage2 from '../../images/CVS-Package-2.png';
+import CVSPackage3 from '../../images/CVS-Package-3.png';
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -99,15 +98,13 @@ export default function Package() {
                   <div className="items-left relative flex h-full flex-col justify-center gap-2 text-[min(4vw,1rem)] text-gray-700">
                     <img
                       src={
-                        item.package_name === 'Advance'
-                          ? Advance
-                          : item.package_name === 'Elite'
-                          ? Elite
-                          : item.package_name === 'Basic'
-                          ? Basic
-                          : item.package_name === 'Premium'
-                          ? Premium
-                          : ''
+                        item.package_name === 'Package 1' || item.package_name === 'Basic'
+                          ? CVSPackage1
+                          : item.package_name === 'Package 2' || item.package_name === 'Advance'
+                          ? CVSPackage2
+                          : item.package_name === 'Package 3' || item.package_name === 'Elite'
+                          ? CVSPackage3
+                          : CVSPackage1 // default fallback
                       }
                       alt={`${item.package_name} image`}
                       style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
