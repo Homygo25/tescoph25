@@ -4,7 +4,7 @@ import { Dialog, DialogPanel } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Link, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import bgImage from '../images/cvs-pharmacy-bg.png';
+import bgImage from '../images/image.png';
 import CVSLogo from './cvslogo';
 
 const navigation = [
