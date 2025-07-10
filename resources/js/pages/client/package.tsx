@@ -7,10 +7,9 @@ import { Head, usePage } from '@inertiajs/react';
 import { CircleCheck } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import dynamic from 'next/dynamic';
 
-import CVSPackage1 from '../../images/CVS-Package-1.png';
-import CVSPackage2 from '../../images/CVS-Package-2.png';
-import CVSPackage3 from '../../images/CVS-Package-3.png';
+const PackageCarousel = dynamic(() => import('@/components/client/package/PackageCarousel'), { ssr: false });
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -46,20 +45,24 @@ interface PageProps {
 }
 
 export default function Package() {
-  const { auth, receiving_bank, all_package, success, error, account_balance } =
-    usePage<PageProps>().props;
-
+  const { auth, receiving_bank, all_package, success, error, account_balance } = usePage<PageProps>().props;
   const [openModal, setOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<Package>({
-    id: 0,
-    package_name: '',
-    min_amount: 0,
-    daily_shares_rate: 0,
-    effective_days: 0,
-    referal_bonus_rate: 0,
-    available_slots: 0,
-    max_amount: 0,
+    id: 0, package_name: '', min_amount: 0, daily_shares_rate: 0, effective_days: 0, referal_bonus_rate: 0, available_slots: 0, max_amount: 0, image: ''
   });
+
+  // Add image property for carousel
+  const packagesWithImages = all_package.map((item) => ({
+    ...item,
+    image:
+      item.package_name === 'Package 1' || item.package_name === 'Basic'
+        ? '/packages/CVS-Package-1.png'
+        : item.package_name === 'Package 2' || item.package_name === 'Advance'
+        ? '/packages/CVS-Package-2.png'
+        : item.package_name === 'Package 3' || item.package_name === 'Elite'
+        ? '/packages/CVS-Package-3.png'
+        : '/packages/CVS-Package-1.png',
+  }));
 
   function onSelect(pkg: Package | null) {
     if (pkg === null || pkg.id === 0) {
@@ -73,11 +76,9 @@ export default function Package() {
   function successToast() {
     return toast.success(success?.message ?? '');
   }
-
   function errorToast() {
     return toast.error(error?.message ?? '');
   }
-
   useEffect(() => {
     success?.message && successToast();
     error?.message && errorToast();
@@ -88,7 +89,11 @@ export default function Package() {
       <Head title="Package" />
       <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
         <h1 className="ml-1 text-xl font-bold">Choose a package</h1>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {/* Mobile: Carousel, Desktop: Grid */}
+        <div className="block md:hidden">
+          <PackageCarousel packages={packagesWithImages} onSelect={onSelect} />
+        </div>
+        <div className="hidden md:grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {all_package.length === 0 ? (
             <>No Package Available</>
           ) : (
@@ -96,47 +101,82 @@ export default function Package() {
               <Card key={item.id}>
                 <CardHeader className="h-auto space-y-0 pb-2">
                   <div className="items-left relative flex h-full flex-col justify-center gap-2 text-[min(4vw,1rem)] text-gray-700">
-                    <img
-                      src={
-                        item.package_name === 'Package 1' || item.package_name === 'Basic'
-                          ? CVSPackage1
-                          : item.package_name === 'Package 2' || item.package_name === 'Advance'
-                          ? CVSPackage2
-                          : item.package_name === 'Package 3' || item.package_name === 'Elite'
-                          ? CVSPackage3
-                          : CVSPackage1 // default fallback
-                      }
-                      alt={`${item.package_name} image`}
-                      style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
-                    />
-
-                    <p>
-                      Daily shares:{' '}
-                      {(item.daily_shares_rate * 100).toFixed(2)}%
-                    </p>
-                    <p>Days of Contract: {item.effective_days}</p>
-
-                    <span className="flex items-center">
-                      <CircleCheck size={25} className="mr-2" />
-                      <p className="font-medium">
-                        Referral Bonus: {item.referal_bonus_rate * 100}%
-                      </p>
-                    </span>
-                    <span className="flex items-center">
-                      <CircleCheck size={25} className="mr-2" />
-                      <p className="font-medium">
-                        Slots Available: {item.available_slots}
-                      </p>
-                    </span>
+                    <div style={{ position: 'relative', width: '100%' }}>
+                      <img
+                        src={
+                          item.package_name === 'Package 1' || item.package_name === 'Basic'
+                            ? '/packages/CVS-Package-1.png'
+                            : item.package_name === 'Package 2' || item.package_name === 'Advance'
+                            ? '/packages/CVS-Package-2.png'
+                            : item.package_name === 'Package 3' || item.package_name === 'Elite'
+                            ? '/packages/CVS-Package-3.png'
+                            : '/packages/CVS-Package-1.png'
+                        }
+                        alt={`${item.package_name} image`}
+                        className="cvs-float-img"
+                        style={{ width: '100%', height: 'auto', objectFit: 'cover', borderRadius: '16px' }}
+                      />
+                      {/* Unified overlay info */}
+                      <div style={{
+                        position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background: 'rgba(0,0,0,0.65)',
+                        color: '#fff',
+                        padding: '10px 8px 8px 8px',
+                        borderBottomLeftRadius: '8px',
+                        borderBottomRightRadius: '8px',
+                        fontWeight: 'bold',
+                        fontSize: '0.98rem',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '2px',
+                        alignItems: 'flex-start',
+                      }}>
+                        <span>Slots: {item.available_slots}</span>
+                        <span>Daily shares: {(item.daily_shares_rate * 100).toFixed(2)}%</span>
+                        <span>Days: {item.effective_days}</span>
+                        <span>Referral Bonus: {item.referal_bonus_rate * 100}%</span>
+                      </div>
+                    </div>
                   </div>
                 </CardHeader>
                 <CardFooter className="flex justify-end">
                   <Button
-                    className="w-full cursor-pointer"
+                    className="w-full cursor-pointer font-bold border-none shadow-md transition-colors duration-150 pulse-select-btn"
+                    style={{
+                      background: '#b8001c',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: '8px',
+                      boxShadow: '0 2px 8px rgba(184,0,28,0.10)',
+                      transition: 'background 0.2s',
+                    }}
+                    onMouseOver={e => (e.currentTarget.style.background = '#a00018')}
+                    onMouseOut={e => (e.currentTarget.style.background = '#b8001c')}
                     onClick={() => onSelect(item)}
                   >
                     Select
                   </Button>
+                  <style>{`
+                    @keyframes pulse {
+                      0% { transform: scale(1); box-shadow: 0 2px 8px rgba(184,0,28,0.10); }
+                      50% { transform: scale(1.03); box-shadow: 0 4px 16px rgba(184,0,28,0.18); }
+                      100% { transform: scale(1); box-shadow: 0 2px 8px rgba(184,0,28,0.10); }
+                    }
+                    .pulse-select-btn {
+                      animation: pulse 2.5s infinite;
+                    }
+                    @keyframes float {
+                      0% { transform: translateY(0px); }
+                      50% { transform: translateY(-8px); }
+                      100% { transform: translateY(0px); }
+                    }
+                    .cvs-float-img {
+                      animation: float 3.5s ease-in-out infinite;
+                    }
+                  `}</style>
                 </CardFooter>
               </Card>
             ))

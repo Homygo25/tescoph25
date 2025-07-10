@@ -91,9 +91,13 @@ export function PackageModal({ account_balance, open, selectedPackage, onSelect,
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>
-                        <Badge className="mt-3 w-full text-2xl">
-                            <p className="">{pck?.package_name}</p>
-                            <p>Deposit</p>
+                        <Badge className="mt-3 w-full text-2xl bg-[#b8001c] text-white rounded-lg shadow-md border-none p-3 flex flex-col items-center justify-center">
+                            <span className="font-bold tracking-wide text-2xl">
+                              {pck?.package_name === 'Basic' ? 'Essential Care Plan'
+                                : pck?.package_name === 'Advance' ? 'Family Wellness Plan'
+                                : pck?.package_name === 'Elite' ? 'Premium Plus Plan'
+                                : pck?.package_name}
+                            </span>
                         </Badge>
                     </DialogTitle>
                 </DialogHeader>
@@ -149,7 +153,22 @@ export function PackageModal({ account_balance, open, selectedPackage, onSelect,
                     <Button variant={'ghost'} onClick={() => onSelect(null)}>
                         Close
                     </Button>
-                    <Button onClick={handleAvail}>Avail</Button>
+                    <Button
+                        className="font-bold border-none shadow-md transition-colors duration-150"
+                        style={{
+                            background: '#b8001c',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: '8px',
+                            boxShadow: '0 2px 8px rgba(184,0,28,0.10)',
+                            transition: 'background 0.2s',
+                        }}
+                        onMouseOver={e => (e.currentTarget.style.background = '#a00018')}
+                        onMouseOut={e => (e.currentTarget.style.background = '#b8001c')}
+                        onClick={handleAvail}
+                    >
+                        Avail
+                    </Button>
                 </DialogFooter>
             </DialogContent>
             <PaymentSuccessfulModal open={opensuccess} onOpen={handleOpensuccess} finalValues={finalValues} />

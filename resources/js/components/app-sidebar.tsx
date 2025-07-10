@@ -106,20 +106,16 @@ const ClientmainNavItems: NavItem[] = [
         url: '/request-fund',
         icon: FileInput,
     },
+    // Transaction History parent button
     {
-        title: 'Income History',
-        url: '/income-history',
-        icon: Plus,
-    },
-    {
-        title: 'Deposit History',
-        url: '/deposit-history',
+        title: 'Transaction History',
+        url: '/transaction-history',
         icon: ArrowBigDown,
-    },
-    {
-        title: 'Withdraw Records',
-        url: '/withdraw-history',
-        icon: AlignLeft,
+        children: [
+            { title: 'Income', url: '/income-history', icon: Plus },
+            { title: 'Deposit', url: '/deposit-history', icon: ArrowBigDown },
+            { title: 'Withdrawal', url: '/withdraw-history', icon: AlignLeft },
+        ],
     },
     {
         title: 'Referrals',
@@ -131,14 +127,15 @@ const ClientmainNavItems: NavItem[] = [
         url: '/franchise-application',
         icon: Store,
     },
+    // CVS-specific menu items (replace or add as needed)
     {
-        title: 'Tesco Credit Application',
+        title: 'CVS Credit Application',
         url: '/credit-application',
         icon: IdCard,
     },
     {
-        title: 'Tesco Profile',
-        url: 'https://www.tescoplc.com/about',
+        title: 'CVS Profile',
+        url: '/profile',
         icon: TypeOutline,
     },
 ];
@@ -172,18 +169,14 @@ export function AppSidebar({ role }: any) {
                         <SidebarMenuButton size="lg" asChild>
                             <Link href="/dashboard" prefetch>
                                 <AppLogo />
-                                {/* <img src={Tesco_logo} alt="" className="h-11" /> */}
                             </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
-
             <SidebarContent>
-                {/* <NavMain items={ClientmainNavItems} /> */}
                 <NavMain items={role == 'client' ? ClientmainNavItems : role == 'admin' ? AdminmainNavItems : EmptymainNavItems} />
             </SidebarContent>
-
             <SidebarFooter>
                 <NavFooter items={footerNavItems} className="mt-auto" />
                 <NavUser />

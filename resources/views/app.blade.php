@@ -17,7 +17,20 @@
     @vite(['resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
     @inertiaHead
 
-    <link rel="icon" href="/cvs-logo.png" type="image/png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <span>
+        @if(auth()->check())
+            Balance: ₱{{ number_format(auth()->user()->balance, 2) }}
+        @else
+            Balance: ₱0.00
+        @endif
+    </span>
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="shortcut icon" href="/favicon.ico">
 
     <meta property="og:title" content="CVS Pharmacy Members" />
     <meta property="og:description" content="Welcome to CVS Pharmacy members' portal!" />

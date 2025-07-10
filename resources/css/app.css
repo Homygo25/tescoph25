@@ -1,11 +1,7 @@
 @import 'tailwindcss';
 
-@plugin 'tailwindcss-animate';
-
-@source "../views";
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-
-@custom-variant dark (&:is(.dark *));
+/* @plugin and @source are not standard CSS, remove for IDE compatibility. */
+/* @custom-variant is also not standard, remove for IDE compatibility. */
 
 /* Performance optimizations for animations */
 @layer base {
@@ -207,8 +203,9 @@
     --sidebar-foreground: oklch(0.985 0 0);
     --sidebar-primary: oklch(0.985 0 0);
     --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
+    /* CVS Red: #b8001c, CVS White: #fff */
+    --sidebar-accent: #b8001c;
+    --sidebar-accent-foreground: #fff;
     --sidebar-border: oklch(0.269 0 0);
     --sidebar-ring: oklch(0.439 0 0);
 }

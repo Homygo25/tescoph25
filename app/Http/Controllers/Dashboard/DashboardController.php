@@ -48,7 +48,7 @@ class DashboardController extends Controller
         return Inertia::render('client/dashboard', [
             'APP_DOMAIN' => config('app.url'),
             'testpass' => 'testinggg',
-            'account_balance' => $balance->balance ? $balance->balance : 0,
+            'account_balance' => $balance && $balance->balance ? $balance->balance : 0,
             'total_interest' => $totalInterest ? $totalInterest : 0,
             'referral_bonus' => $referralBonuses,
             'active_deposit' => $totalApprovedAmount ? $totalApprovedAmount : 0,

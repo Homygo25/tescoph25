@@ -34,16 +34,6 @@ class PackageSeeder extends Seeder
                 'sort_order' => 2,
             ],
             [
-                'package_name' => 'Premium',
-                'min_amount' => 5000.00,
-                'max_amount' => 9999.00,
-                'daily_shares_rate' => 0.000,
-                'available_slots' => 30,
-                'effective_days' => 180,
-                'referal_bonus_rate' => 0.05,
-                'sort_order' => 3,
-            ],
-            [
                 'package_name' => 'Elite',
                 'min_amount' => 10000.00,
                 'max_amount' => 9999999.00,
@@ -51,7 +41,7 @@ class PackageSeeder extends Seeder
                 'available_slots' => 26,
                 'effective_days' => 180,
                 'referal_bonus_rate' => 0.05,
-                'sort_order' => 4,
+                'sort_order' => 3,
             ],
         ];
 

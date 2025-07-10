@@ -16,10 +16,10 @@ class UsersTableSeeder extends Seeder
     {
         DB::table('users')->insert([
             [
-                'username' => 'tescoadminuser',
+                'username' => 'cvsadminuser',
                 'name' => 'Admin User',
-                'email' => 'tescoadminuser@example.com',
-                'password' => Hash::make('tescoadminuser1!'),
+                'email' => 'cvsadminuser@example.com',
+                'password' => Hash::make('cvsadminuser1!'),
                 'role' => 'admin',
                 'gender' => 'o',
                 // 'used_ref' => null, // No referral
@@ -35,7 +35,7 @@ class UsersTableSeeder extends Seeder
                 'password' => Hash::make('john1234!'),
                 'role' => 'client',
                 'gender' => 'm',
-                // 'used_ref' => 'tescoadminuser', // Referred by admin
+                // 'used_ref' => 'cvsadminuser', // Referred by admin
                 // 'remember_token' => Str::random(10),
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -112,7 +112,7 @@ class UsersTableSeeder extends Seeder
 
             [
                 'user_id' => 2,
-                'ref_user_username' => 'tescoadminuser',
+                'ref_user_username' => 'cvsadminuser',
                 'ref_user_id' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),

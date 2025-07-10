@@ -2,11 +2,8 @@ import CVSLogo from '@/pages/cvslogo';
 
 export default function AppLogo() {
     return (
-        <>
-            {/* <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-md">
-                <Wallet className="size-5 fill-current text-white dark:text-black" />
-            </div> */}
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '12px 0' }}>
             <CVSLogo />
-        </>
+        </div>
     );
 }
