@@ -7,7 +7,25 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow, Pagination } from 'swiper/modules';
 import { useState } from 'react';
 
-export default function PackageCarousel({ packages, onSelect }) {
+// Import the type from the parent file if possible, or redefine here
+export interface PackageWithImage {
+  id: number;
+  package_name: string;
+  min_amount: number;
+  daily_shares_rate: number;
+  effective_days: number;
+  referal_bonus_rate: number;
+  available_slots: number;
+  max_amount: number;
+  image: string;
+}
+
+interface PackageCarouselProps {
+  packages: PackageWithImage[];
+  onSelect: (pkg: PackageWithImage) => void;
+}
+
+export default function PackageCarousel({ packages, onSelect }: PackageCarouselProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   return (
     <Swiper
@@ -35,8 +53,6 @@ export default function PackageCarousel({ packages, onSelect }) {
             onClick={() => onSelect(item)}
             style={{ cursor: 'pointer' }}
           >
-            {/* Render your package card here, e.g. <PackageCard ... /> */}
-            {/* Example: */}
             <img src={item.image} alt={item.package_name} style={{ borderRadius: 16, width: '100%' }} />
             <div className="text-center font-bold mt-2">{item.package_name}</div>
           </div>

@@ -5,11 +5,10 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { CircleCheck } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { lazy, useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import dynamic from 'next/dynamic';
 
-const PackageCarousel = dynamic(() => import('@/components/client/package/PackageCarousel'), { ssr: false });
+const PackageCarousel = lazy(() => import('@/components/client/package/PackageCarousel'));
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -38,6 +37,11 @@ export interface Package {
   max_amount: number;
 }
 
+// Extended type for carousel with image
+export interface PackageWithImage extends Package {
+  image: string;
+}
+
 interface PageProps {
   receiving_bank: ReceivingBank[];
   all_package: Package[];
@@ -47,12 +51,12 @@ interface PageProps {
 export default function Package() {
   const { auth, receiving_bank, all_package, success, error, account_balance } = usePage<PageProps>().props;
   const [openModal, setOpen] = useState(false);
-  const [selectedPackage, setSelectedPackage] = useState<Package>({
+  const [selectedPackage, setSelectedPackage] = useState<PackageWithImage>({
     id: 0, package_name: '', min_amount: 0, daily_shares_rate: 0, effective_days: 0, referal_bonus_rate: 0, available_slots: 0, max_amount: 0, image: ''
   });
 
   // Add image property for carousel
-  const packagesWithImages = all_package.map((item) => ({
+  const packagesWithImages: PackageWithImage[] = all_package.map((item) => ({
     ...item,
     image:
       item.package_name === 'Package 1' || item.package_name === 'Basic'
@@ -94,24 +98,16 @@ export default function Package() {
           <PackageCarousel packages={packagesWithImages} onSelect={onSelect} />
         </div>
         <div className="hidden md:grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {all_package.length === 0 ? (
+          {packagesWithImages.length === 0 ? (
             <>No Package Available</>
           ) : (
-            all_package.map((item: Package) => (
+            packagesWithImages.map((item: PackageWithImage) => (
               <Card key={item.id}>
                 <CardHeader className="h-auto space-y-0 pb-2">
                   <div className="items-left relative flex h-full flex-col justify-center gap-2 text-[min(4vw,1rem)] text-gray-700">
                     <div style={{ position: 'relative', width: '100%' }}>
                       <img
-                        src={
-                          item.package_name === 'Package 1' || item.package_name === 'Basic'
-                            ? '/packages/CVS-Package-1.png'
-                            : item.package_name === 'Package 2' || item.package_name === 'Advance'
-                            ? '/packages/CVS-Package-2.png'
-                            : item.package_name === 'Package 3' || item.package_name === 'Elite'
-                            ? '/packages/CVS-Package-3.png'
-                            : '/packages/CVS-Package-1.png'
-                        }
+                        src={item.image}
                         alt={`${item.package_name} image`}
                         className="cvs-float-img"
                         style={{ width: '100%', height: 'auto', objectFit: 'cover', borderRadius: '16px' }}

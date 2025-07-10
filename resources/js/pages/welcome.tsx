@@ -1,90 +1,68 @@
-// import tescoLogo from '@/images/Tesco_logo.png';
-import { type SharedData } from '@/types';
-import { Dialog, DialogPanel } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Link, usePage } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
+
+import React from 'react';
 import CVSLogo from './cvslogo';
 
-const navigation = [
-    { name: 'Home', href: '#' },
-    { name: 'Blog', href: '#' },
-    { name: 'Services', href: '#' },
-    { name: 'About', href: '#' },
-];
+// TypewriterText must be declared outside the component
+/**
+ * TypewriterText component for typewriter effect on text.
+ * @param {{ text: string; className?: string; show: boolean }} props
+ */
+
+// Add animation styles to the document head (only once)
+if (typeof window !== 'undefined' && !document.getElementById('hero-animations')) {
+  const style = document.createElement('style');
+  style.id = 'hero-animations';
+  style.innerHTML = `
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in-up { animation: fadeInUp 1s ease-out forwards; }
+    .delay-200 { animation-delay: 0.2s; }
+    .logo-glow { animation: glow 2.5s ease-in-out infinite; }
+    @keyframes glow {
+      0%, 100% { filter: drop-shadow(0 0 0px #cfe5ff); }
+      50% { filter: drop-shadow(0 0 8px #b3d4fc); }
+    }
+  `;
+  document.head.appendChild(style);
+}
 
 export default function Welcome() {
-    const [location, setLocation] = useState(null);
-    const [error, setError] = useState(null);
-
-    const { auth, ref } = usePage<SharedData>().props;
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-    const scrollToSection = (id: string) => {
-        const section = document.getElementById(id);
-        if (section) {
-            section.scrollIntoView({ behavior: 'smooth' });
+    React.useEffect(() => {
+        // Typewriter effect for tagline
+        const tagline = "The First Drive-Thru Pharmacy in the Philippines";
+        let i = 0;
+        const el = document.getElementById("tagline");
+        if (!el) return;
+        el.innerHTML = "";
+        function typeWriter() {
+            if (i < tagline.length) {
+                el.innerHTML += tagline.charAt(i);
+                i++;
+                setTimeout(typeWriter, 40);
+            }
         }
-    };
+        typeWriter();
 
-    const [storedRef, setStoredRef] = useState<string | null>(null);
+        // 5-second redirect
+        const timer = setTimeout(() => {
+            window.location.href = '/login';
+        }, 5000);
+        return () => clearTimeout(timer);
+    }, []);
 
-    useEffect(() => {
-        if (ref) {
-            console.log(ref);
-            setStoredRef(ref);
-        }
-    }, [ref]);
-    //yawa
     return (
-        <div
-            className="min-h-screen flex items-center justify-center relative"
-            style={{
-                backgroundImage: "url('/CVSheropage.png')",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-            }}
-        >
-            {/* Overlay for readability */}
-            <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-
-            {/* Top left logo/brand */}
-            <div className="absolute top-6 left-6 flex items-center gap-2 z-10">
-                <CVSLogo />
-                <span className="text-white font-semibold text-sm">CVS Pharmacy</span>
-            </div>
-
-            {/* Centered hero card */}
-            <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md text-center z-10">
-                <CVSLogo />
-                <h1 className="text-xl font-bold text-gray-800 mb-1 mt-2">CVS Pharmacy</h1>
-                <p className="text-sm text-gray-500 mb-6">
-                    First Drive-Thru Pharmacy in the Philippines
-                </p>
-                <div className="flex justify-center gap-4">
-                    <a href="/login"
-                        className="px-5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-semibold transition">
-                        Log In
-                    </a>
-                    <a href="/register"
-                        className="px-5 py-2 border border-red-600 text-red-600 hover:bg-red-50 rounded-lg text-sm font-semibold transition">
-                        Sign Up
-                    </a>
-                </div>
-            </div>
-
-            {/* Top right auth buttons */}
-            <div className="absolute top-6 right-6 flex gap-2 z-10">
-                <a href="/login"
-                    className="text-white border border-white px-4 py-1.5 rounded-lg text-sm hover:bg-white hover:text-black transition">
-                    Log In
-                </a>
-                <a href="/register"
-                    className="bg-red-600 text-white px-4 py-1.5 rounded-lg text-sm font-semibold hover:bg-red-700 transition">
-                    Register
-                </a>
-            </div>
+        <div className="min-h-screen flex flex-col justify-center items-center bg-white px-6 text-center">
+            {/* Logo with soft pulse glow */}
+            <img
+                src="/logoCvs.png"
+                alt="CVS Logo"
+                className="h-40 mb-4 animate-fade-in-up logo-glow"
+                style={{ maxWidth: 320 }}
+            />
+            {/* Tagline (typewriter effect) */}
+            <h1 id="tagline" className="text-2xl font-semibold text-gray-700 animate-fade-in-up delay-200"></h1>
         </div>
     );
 }

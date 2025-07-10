@@ -11,7 +11,6 @@ use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class TransferfundController extends Controller
@@ -22,12 +21,19 @@ class TransferfundController extends Controller
     public function __construct()
     {
         $this->currentUser = Auth::user();
-        $this->balance = AccountBalance::where('user_id', $this->currentUser->id)->first()->balance;
+        if ($this->currentUser) {
+            $accountBalance = AccountBalance::where('user_id', $this->currentUser->id)->first();
+            $this->balance = $accountBalance ? $accountBalance->balance : 0;
+        } else {
+            $this->balance = 0;
+        }
     }
 
     public function index()
     {
-        // $sent_transactions = Transferfund::where('user_id', $this->currentUser->id)->get();
+        if (!$this->currentUser || !isset($this->currentUser->id)) {
+            return redirect()->route('login');
+        }
 
         $sent_transactions = DB::table('transferfund as tf')
             ->leftJoin('users as u', 'u.id', '=', 'tf.receiver_user_id')
@@ -55,28 +61,29 @@ class TransferfundController extends Controller
     public function postTransferfund(Request $request)
     {
         $time = now()->format('H:i:s');
+        if (!$this->currentUser || !isset($this->currentUser->id)) {
+            return redirect()->route('login');
+        }
         $userRole = $request->user()->role;
 
         $userSearch = new UserService();
         $userSearchResult = $userSearch->searchName($request->name);
 
         if ($this->currentUser->name == $request->name || $this->currentUser->username == $request->name) {
-            return redirect()->back()->with('error', ['message' => "Sorry, you can't send money to your own name.", $time]);
+            return redirect()->back()->with('error', ['message' => "Sorry, you can't send money to your own name.", 'time' => $time]);
         }
 
         if (!$request->name || $this->currentUser->name == $request->name || $this->currentUser->username == $request->name) {
-            return redirect()->back()->with('error', ['message' => "Invalid receiver's name.", $time]);
+            return redirect()->back()->with('error', ['message' => "Invalid receiver's name.", 'time' => $time]);
         }
-        if (!$userSearchResult) {
-            return redirect()->back()->with('error', ['message' => "Receiver's name not found.", $time]);
+        if (!$userSearchResult || !isset($userSearchResult->id)) {
+            return redirect()->back()->with('error', ['message' => "Receiver's name not found.", 'time' => $time]);
         }
-        if (!$userRole == 'admin') {
-
+        if ($userRole !== 'admin') {
             if ($request->transfer_amount > $this->balance) {
-
-                return redirect()->back()->with('error', ['message' => 'Insufficient Balance.', $time]);
+                return redirect()->back()->with('error', ['message' => 'Insufficient Balance.', 'time' => $time]);
             } elseif ($request->transfer_amount < 1 || !$request->transfer_amount) {
-                return redirect()->back()->with('error', ['message' => 'Requested amount is less than 1$.', $time]);
+                return redirect()->back()->with('error', ['message' => 'Requested amount is less than 1$.', 'time' => $time]);
             }
         }
 
@@ -95,6 +102,6 @@ class TransferfundController extends Controller
         $accountBalServiceTransfer = new AccountBalanceService();
         $accountBalServiceTransfer->addAccountBalance($userSearchResult->id, $request->transfer_amount);
 
-        return redirect()->back()->with('success', ['message' => 'Fund sent successfully', $time]);
+        return redirect()->back()->with('success', ['message' => 'Fund sent successfully', 'time' => $time]);
     }
 }

@@ -19,7 +19,8 @@ class WithdrawController extends Controller
     public function __construct()
     {
         $this->currentUser = Auth::user();
-        $this->balance = AccountBalance::where('user_id', $this->currentUser->id)->first()->balance;
+        $accountBalance = AccountBalance::where('user_id', $this->currentUser->id)->first();
+        $this->balance = $accountBalance ? $accountBalance->balance : 0;
     }
 
     public function index()
@@ -35,7 +36,7 @@ class WithdrawController extends Controller
 
     public function indexHistory()
     {
-        $history = WithdrawTransaction::where('user_id', $this->currentUser->id)->latest('created_at', 'desc')->get();
+        $history = WithdrawTransaction::where('user_id', $this->currentUser->id)->latest('created_at')->get();
         $total_withdraw = WithdrawTransaction::where('user_id', $this->currentUser->id)->where('status', 'approved')->sum('withdrawal_amount');
         return Inertia::render('client/withdraw-history', [
             'history' => $history,
@@ -50,13 +51,13 @@ class WithdrawController extends Controller
         $accountBalService = new AccountBalanceService();
 
         if (!is_numeric($request->withdrawal_amount)) {
-            return redirect()->back()->with('error', ['message' => 'Invalid inputted amount.', $time]);
+            return redirect()->back()->with('error', ['message' => 'Invalid inputted amount.', 'time' => $time]);
         } elseif ($request->withdrawal_amount > $this->balance) {
-            return redirect()->back()->with('error', ['message' => 'Insufficient Balance.'], $time);
+            return redirect()->back()->with(['error' => ['message' => 'Insufficient Balance.', 'time' => $time]]);
         } elseif ($request->withdrawal_amount < 20 || !$request->withdrawal_amount) {
-            return redirect()->back()->with('error', ['message' => 'Requested amount is less than the minimum.', $time]);
+            return redirect()->back()->with(['error' => ['message' => 'Requested amount is less than the minimum.', 'time' => $time]]);
         } elseif ($request->withdrawal_amount > 500 || !$request->withdrawal_amount) {
-            return redirect()->back()->with('error', ['message' => 'Requested amount is greater than the maximum.', $time]);
+            return redirect()->back()->with(['error' => ['message' => 'Requested amount is greater than the maximum.', 'time' => $time]]);
         }
 
         WithdrawTransaction::create([

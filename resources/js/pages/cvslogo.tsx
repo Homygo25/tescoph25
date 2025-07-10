@@ -1,9 +1,13 @@
+
+// Use public path for logo to ensure visibility
+const logoCvs = '/logoCvs.png';
+
 export default function CVSLogo() {
     return (
         <img
-            src="/CVS-logo-temp/image.png"
+            src={logoCvs}
             alt="CVS Pharmacy"
-            style={{ width: '210px', height: 'auto', display: 'block', margin: '0 auto', maxWidth: '90%' }}
+            style={{ width: '100%', height: 'auto', display: 'block', margin: '0 auto', maxWidth: 320 }}
         />
     );
 }
