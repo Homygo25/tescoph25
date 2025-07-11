@@ -18,13 +18,7 @@
     @inertiaHead
 
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <span>
-        @if(auth()->check())
-            Balance: ₱{{ number_format(auth()->user()->balance, 2) }}
-        @else
-            Balance: ₱0.00
-        @endif
-    </span>
+    <!-- Removed balance display for hero and login pages -->
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">

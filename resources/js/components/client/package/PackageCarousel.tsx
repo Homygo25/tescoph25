@@ -4,10 +4,21 @@ import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectCoverflow, Pagination } from 'swiper/modules';
+import { EffectCoverflow } from 'swiper/modules';
+import { Pagination } from 'swiper/modules';
 import { useState } from 'react';
 
-export default function PackageCarousel({ packages, onSelect }) {
+// Use the main Package type from the parent file for type safety
+import type { Package as MainPackageType } from '@/pages/client/package';
+
+type Package = MainPackageType;
+
+interface PackageCarouselProps {
+  packages: Package[];
+  onSelect: (pkg: Package | null) => void;
+}
+
+export function PackageCarousel({ packages, onSelect }: PackageCarouselProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   return (
     <Swiper

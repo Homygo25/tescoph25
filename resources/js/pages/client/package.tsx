@@ -7,9 +7,7 @@ import { Head, usePage } from '@inertiajs/react';
 import { CircleCheck } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import dynamic from 'next/dynamic';
-
-const PackageCarousel = dynamic(() => import('@/components/client/package/PackageCarousel'), { ssr: false });
+import { PackageCarousel } from '@/components/client/package/PackageCarousel';
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -36,6 +34,7 @@ export interface Package {
   referal_bonus_rate: number;
   available_slots: number;
   max_amount: number;
+  image?: string; // Add image property for UI
 }
 
 interface PageProps {

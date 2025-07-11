@@ -65,20 +65,9 @@
   }
 }
 
-@theme {
-    --font-sans:
-        'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+/* Removed @theme block for compatibility. Define variables in :root or use Tailwind config. */
 
-    --radius-lg: var(--radius);
-    --radius-md: calc(var(--radius) - 2px);
-    --radius-sm: calc(var(--radius) - 4px);
-
-    --color-background: var(--background);
-    --color-foreground: var(--foreground);
-
-    --color-card: var(--card);
-    --color-card-foreground: var(--card-foreground);
-
+:root {
     --color-popover: var(--popover);
     --color-popover-foreground: var(--popover-foreground);
 
@@ -211,11 +200,41 @@
 }
 
 @layer base {
-    * {
-        @apply border-border;
-    }
+    /* Removed @apply for compatibility. Use Tailwind classes directly in HTML/JSX or define in Tailwind config. */
+}
 
-    body {
-        @apply bg-background text-foreground;
-    }
+/* 3D Hero logo shine effect */
+.perspective {
+  perspective: 1000px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.logo-reflect::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  transform: skewX(-25deg);
+  animation: shine 2s ease-in-out 0.5s forwards;
+}
+
+@keyframes shine {
+  0% {
+    left: -75%;
+  }
+  100% {
+    left: 125%;
+  }
 }

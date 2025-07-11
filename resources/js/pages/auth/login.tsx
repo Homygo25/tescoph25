@@ -37,18 +37,17 @@ export default function Login({ status, canResetPassword }: LoginProps) {
     };
 
     return (
-        // <AuthLayout title="Log in to your account" description="Enter your username and password below to log in">
-        <AuthLayout2>
-            {/* COMMENT */}
+        <AuthLayout2 title="Log in" description="Enter your username and password below to log in">
             <Head title="Log in" />
-            <div className="mb-5 flex flex-col items-center gap-2 text-center">
-                <h1 className="text-2xl font-bold">Login to your account</h1>
-                <p className="text-muted-foreground text-sm text-balance">Enter your username below to login to your account</p>
+            <div className="mb-5 flex flex-col items-center gap-2 text-center text-white">
+                <h1 className="text-2xl font-bold text-white drop-shadow-lg">Login to your account</h1>
+                <p className="text-base text-white/90 drop-shadow">Enter your username below to login to your account</p>
             </div>
+
             <form className="flex flex-col gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
                     <div className="grid gap-2">
-                        <Label htmlFor="username">Username</Label>
+                        <Label htmlFor="username" className="text-white">Username</Label>
                         <Input
                             id="username"
                             type="text"
@@ -59,15 +58,16 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             value={data.username}
                             onChange={(e) => setData('username', e.target.value)}
                             placeholder="Username"
+                            className="text-white placeholder-white/80 bg-white/10 border-white/30 focus:border-white focus:ring-white"
                         />
                         <InputError message={errors.username} />
                     </div>
 
                     <div className="grid gap-2">
                         <div className="flex items-center">
-                            <Label htmlFor="password">Password</Label>
+                            <Label htmlFor="password" className="text-white">Password</Label>
                             {canResetPassword && (
-                                <TextLink href={route('password.request')} className="ml-auto text-sm" tabIndex={5}>
+                                <TextLink href={route('password.request')} className="ml-auto text-sm text-white/80 hover:text-white underline" tabIndex={5}>
                                     Forgot password?
                                 </TextLink>
                             )}
@@ -81,6 +81,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             value={data.password}
                             onChange={(e) => setData('password', e.target.value)}
                             placeholder="Password"
+                            className="text-white placeholder-white/80 bg-white/10 border-white/30 focus:border-white focus:ring-white"
                         />
                         <InputError message={errors.password} />
                     </div>
@@ -93,25 +94,24 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             onClick={() => setData('remember', !data.remember)}
                             tabIndex={3}
                         />
-                        <Label htmlFor="remember">Remember me</Label>
+                        <Label htmlFor="remember" className="text-white">Remember me</Label>
                     </div>
 
-                    <Button type="submit" className="mt-4 w-full" tabIndex={4} disabled={processing}>
+                    <Button type="submit" className="mt-4 w-full bg-cvs-red text-white hover:bg-cvs-red/90" tabIndex={4} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                         Log in
                     </Button>
                 </div>
 
-                <div className="text-muted-foreground text-center text-sm">
+                <div className="text-center text-sm text-white/80">
                     Don't have an account?{' '}
-                    <TextLink href={route('register')} tabIndex={5}>
+                    <TextLink href={route('register')} tabIndex={5} className="text-white underline hover:text-white/90">
                         Sign up
                     </TextLink>
                 </div>
             </form>
 
-            {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
+            {status && <div className="mb-4 text-center text-sm font-medium text-green-300">{status}</div>}
         </AuthLayout2>
-        // </AuthLayout>
     );
 }
