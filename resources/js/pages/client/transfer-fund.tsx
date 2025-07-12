@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { TabsClear, TabsContentClear, TabsListClear, TabsTriggerClear } from '@/components/ui/tabs-clear';
-import AppLayout from '@/layouts/app-layout';
+import DashboardLayout from '@/layouts/DashboardLayout';
 import { Auth, RoleProps, type BreadcrumbItem } from '@/types';
 import { formatDate, formattedNumber } from '@/utils/utils';
 import { Head, router, usePage } from '@inertiajs/react';
@@ -40,8 +40,8 @@ type PageProps = {
     }[];
 };
 
-function totalAmount(array: any[]): number {
-    return array.reduce((a, b) => Number(a) + Number(b.transfer_amount), 0);
+function totalAmount(array: { transfer_amount: number }[]): number {
+    return array.reduce((a, b) => a + b.transfer_amount, 0);
 }
 
 export default function TransferFund() {
@@ -53,21 +53,21 @@ export default function TransferFund() {
     // console.log('success', success);
     // console.log('error', error);
 
-    function successToast() {
-        return toast.success(success.message);
-    }
-    function errorToast() {
-        return toast.error(error.message);
-    }
 
     useEffect(() => {
-        success?.message && (successToast(), setReceiver(''), setAmount(null)); //reset input values only if success
-        error?.message && errorToast();
+        if (success?.message) {
+            toast.success(success.message);
+            setReceiver('');
+            setAmount(''); // Use empty string for type safety
+        }
+        if (error?.message) {
+            toast.error(error.message);
+        }
     }, [success, error]);
 
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
-        const res = router.post('/posttransfer-fund', {
+        router.post('/posttransfer-fund', {
             name: receiver,
             transfer_amount: amount,
         });
@@ -76,13 +76,13 @@ export default function TransferFund() {
     function handleAmountChange(e: React.ChangeEvent<HTMLInputElement>) {
         const value = e.target.value;
         if (value === '') {
-            setAmount(''); // Set to empty string for empty input
+            setAmount('');
         } else {
-            setAmount(value); // Keep as string to avoid leading zero issue.
+            setAmount(value);
         }
     }
     return (
-        <AppLayout breadcrumbs={breadcrumbs} role={auth.user.role as RoleProps}>
+        <DashboardLayout>
             <Head title="Dashboard" />
             <div className="flex h-full flex-1 flex-col items-center gap-y-4 p-4">
                 <div className="w-full max-w-[900px]">
@@ -175,6 +175,6 @@ export default function TransferFund() {
                     </div>
                 </div>
             </div>
-        </AppLayout>
+        </DashboardLayout>
     );
 }

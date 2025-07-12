@@ -13,10 +13,9 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::middleware('guest')->group(function () {
-    Route::get('ref/{ref?}', [RegisteredUserController::class, 'create'])
-        ->name('register');
 
-    Route::post('ref/{ref?}', [RegisteredUserController::class, 'store']);
+
+
 
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register');

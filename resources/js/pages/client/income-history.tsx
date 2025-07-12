@@ -21,11 +21,22 @@ export default function AdminTransferFunds() {
         auth: Auth;
     }>().props;
 
-    function totalAmount(array: any[]): number {
-        return array.reduce((a, b) => Number(a) + Number(b.daily_shares_value), 0);
+    function totalAmount(array: unknown[]): number {
+        return array.reduce((a: number, b: unknown) => {
+            if (typeof b === 'object' && b !== null && 'daily_shares_value' in b) {
+                return a + Number((b as { daily_shares_value: number }).daily_shares_value);
+            }
+            return a;
+        }, 0);
     }
-    function totalAmountReferral(array: any[]): number {
-        return array.reduce((a, b) => Number(a) + Number(b.bonus_amount), 0);
+
+    function totalAmountReferral(array: unknown[]): number {
+        return array.reduce((a: number, b: unknown) => {
+            if (typeof b === 'object' && b !== null && 'bonus_amount' in b) {
+                return a + Number((b as { bonus_amount: number }).bonus_amount);
+            }
+            return a;
+        }, 0);
     }
 
     return (

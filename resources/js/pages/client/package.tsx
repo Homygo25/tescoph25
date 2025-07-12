@@ -1,10 +1,9 @@
 import { PackageModal } from '@/components/client/package/PackageModal';
 import { Button } from '@/components/ui/button';
 import { Card, CardFooter, CardHeader } from '@/components/ui/card';
-import AppLayout from '@/layouts/app-layout';
+import DashboardLayout from '@/layouts/DashboardLayout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
-import { CircleCheck } from 'lucide-react';
 import { lazy, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -37,7 +36,6 @@ export interface Package {
   max_amount: number;
 }
 
-// Extended type for carousel with image
 export interface PackageWithImage extends Package {
   image: string;
 }
@@ -45,17 +43,28 @@ export interface PackageWithImage extends Package {
 interface PageProps {
   receiving_bank: ReceivingBank[];
   all_package: Package[];
-  [key: string]: any;
+  auth: { user: { role: string } };
+  success?: { message: string };
+  error?: { message: string };
+  account_balance: number;
+  [key: string]: unknown; // Keep for Inertia compatibility
 }
 
 export default function Package() {
   const { auth, receiving_bank, all_package, success, error, account_balance } = usePage<PageProps>().props;
   const [openModal, setOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<PackageWithImage>({
-    id: 0, package_name: '', min_amount: 0, daily_shares_rate: 0, effective_days: 0, referal_bonus_rate: 0, available_slots: 0, max_amount: 0, image: ''
+    id: 0,
+    package_name: '',
+    min_amount: 0,
+    daily_shares_rate: 0,
+    effective_days: 0,
+    referal_bonus_rate: 0,
+    available_slots: 0,
+    max_amount: 0,
+    image: '',
   });
 
-  // Add image property for carousel
   const packagesWithImages: PackageWithImage[] = all_package.map((item) => ({
     ...item,
     image:
@@ -72,7 +81,6 @@ export default function Package() {
     if (pkg === null || pkg.id === 0) {
       setOpen(false);
     } else {
-      // Find the image for the selected package
       const image =
         pkg.package_name === 'Package 1' || pkg.package_name === 'Basic'
           ? '/packages/CVS-Package-1.png'
@@ -86,26 +94,25 @@ export default function Package() {
     }
   }
 
-  function successToast() {
-    return toast.success(success?.message ?? '');
-  }
-  function errorToast() {
-    return toast.error(error?.message ?? '');
-  }
   useEffect(() => {
-    success?.message && successToast();
-    error?.message && errorToast();
+    if (success && typeof success === 'object' && 'message' in success && typeof success.message === 'string') {
+      toast.success(success.message);
+    }
+    if (error && typeof error === 'object' && 'message' in error && typeof error.message === 'string') {
+      toast.error(error.message);
+    }
   }, [success, error]);
 
   return (
-    <AppLayout breadcrumbs={breadcrumbs} role={auth.user.role}>
+    <DashboardLayout>
       <Head title="Package" />
       <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
         <h1 className="ml-1 text-xl font-bold">Choose a package</h1>
-        {/* Mobile: Carousel, Desktop: Grid */}
+
         <div className="block md:hidden">
           <PackageCarousel packages={packagesWithImages} onSelect={onSelect} />
         </div>
+
         <div className="hidden md:grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {packagesWithImages.length === 0 ? (
             <>No Package Available</>
@@ -114,31 +121,13 @@ export default function Package() {
               <Card key={item.id}>
                 <CardHeader className="h-auto space-y-0 pb-2">
                   <div className="items-left relative flex h-full flex-col justify-center gap-2 text-[min(4vw,1rem)] text-gray-700">
-                    <div style={{ position: 'relative', width: '100%' }}>
+                    <div className="package-img-container">
                       <img
                         src={item.image}
                         alt={`${item.package_name} image`}
-                        className="cvs-float-img"
-                        style={{ width: '100%', height: 'auto', objectFit: 'cover', borderRadius: '16px' }}
+                        className="cvs-float-img package-img"
                       />
-                      {/* Unified overlay info */}
-                      <div style={{
-                        position: 'absolute',
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        background: 'rgba(0,0,0,0.65)',
-                        color: '#fff',
-                        padding: '10px 8px 8px 8px',
-                        borderBottomLeftRadius: '8px',
-                        borderBottomRightRadius: '8px',
-                        fontWeight: 'bold',
-                        fontSize: '0.98rem',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '2px',
-                        alignItems: 'flex-start',
-                      }}>
+                      <div className="package-img-overlay">
                         <span>Slots: {item.available_slots}</span>
                         <span>Daily shares: {(item.daily_shares_rate * 100).toFixed(2)}%</span>
                         <span>Days: {item.effective_days}</span>
@@ -149,45 +138,18 @@ export default function Package() {
                 </CardHeader>
                 <CardFooter className="flex justify-end">
                   <Button
-                    className="w-full cursor-pointer font-bold border-none shadow-md transition-colors duration-150 pulse-select-btn"
-                    style={{
-                      background: '#b8001c',
-                      color: '#fff',
-                      border: 'none',
-                      borderRadius: '8px',
-                      boxShadow: '0 2px 8px rgba(184,0,28,0.10)',
-                      transition: 'background 0.2s',
-                    }}
-                    onMouseOver={e => (e.currentTarget.style.background = '#a00018')}
-                    onMouseOut={e => (e.currentTarget.style.background = '#b8001c')}
+                    className="w-full font-bold pulse-select-btn package-select-btn"
                     onClick={() => onSelect(item)}
                   >
                     Select
                   </Button>
-                  <style>{`
-                    @keyframes pulse {
-                      0% { transform: scale(1); box-shadow: 0 2px 8px rgba(184,0,28,0.10); }
-                      50% { transform: scale(1.03); box-shadow: 0 4px 16px rgba(184,0,28,0.18); }
-                      100% { transform: scale(1); box-shadow: 0 2px 8px rgba(184,0,28,0.10); }
-                    }
-                    .pulse-select-btn {
-                      animation: pulse 2.5s infinite;
-                    }
-                    @keyframes float {
-                      0% { transform: translateY(0px); }
-                      50% { transform: translateY(-8px); }
-                      100% { transform: translateY(0px); }
-                    }
-                    .cvs-float-img {
-                      animation: float 3.5s ease-in-out infinite;
-                    }
-                  `}</style>
                 </CardFooter>
               </Card>
             ))
           )}
         </div>
       </div>
+
       <PackageModal
         account_balance={account_balance}
         open={openModal}
@@ -195,6 +157,6 @@ export default function Package() {
         onSelect={onSelect}
         receiving_bank={receiving_bank}
       />
-    </AppLayout>
+    </DashboardLayout>
   );
 }

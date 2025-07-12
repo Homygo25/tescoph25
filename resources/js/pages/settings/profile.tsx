@@ -1,7 +1,7 @@
 import { RoleProps, type BreadcrumbItem, type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useState } from 'react';
 
 import DeleteUser from '@/components/delete-user';
 import HeadingSmall from '@/components/heading-small';
@@ -20,20 +20,43 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
-    const { auth, referral_used } = usePage<SharedData>().props;
+    const page = usePage<SharedData>();
+    const { auth, referral_used } = page.props;
 
-    console.log('auth', auth);
+    const [previewImage, setPreviewImage] = useState<string | null>(auth.user.profile_image ? `/storage/${auth.user.profile_image}` : null);
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
-        name: auth.user.name,
-        username: auth.user.username,
-        email: auth.user.email,
-        referral: auth.user.used_ref,
+    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<{
+        name: string;
+        username: string;
+        email: string;
+        referral: string;
+        phone: string;
+        social_link: string;
+        image: File | null;
+    }>({
+        name: String(auth.user.name ?? ''),
+        username: String(auth.user.username ?? ''),
+        email: String(auth.user.email ?? ''),
+        referral: String(auth.user.used_ref ?? ''),
+        phone: String(auth.user.phone ?? ''),
+        social_link: String(auth.user.social_link ?? ''),
+        image: null,
     });
 
-    const submit: FormEventHandler = (e) => {
-        e.preventDefault();
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setData('image', file);
+            const reader = new FileReader();
+            reader.onload = () => {
+                setPreviewImage(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
+    const submit: FormEventHandler<HTMLFormElement> = (e) => {
+        e.preventDefault();
         patch(route('profile.update'), {
             preserveScroll: true,
         });
@@ -45,61 +68,92 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
             <SettingsLayout>
                 <div className="space-y-6">
-                    <HeadingSmall title="Profile information" description="Update your name and email address" />
+                    <HeadingSmall title="Profile information" description="Update your profile details" />
 
                     <form onSubmit={submit} className="space-y-6">
                         <div className="grid gap-2">
-                            <Label htmlFor="name">Name</Label>
+                            <Label htmlFor="image">Profile Image</Label>
+                            {previewImage && <img src={previewImage} alt="Preview" className="h-24 w-24 rounded-full object-cover" />}
+                            <Input
+                                id="image"
+                                type="file"
+                                accept="image/*"
+                                className="mt-1 block w-full"
+                                onChange={handleImageChange}
+                            />
+                            <InputError className="mt-2" message={errors.image} />
+                        </div>
 
+                        <div className="grid gap-2">
+                            <Label htmlFor="name">Name</Label>
                             <Input
                                 id="name"
                                 className="mt-1 block w-full"
-                                value={data.name}
-                                onChange={(e) => setData('name', e.target.value)}
+                                value={data.name ?? ''}
+                                onChange={(e: unknown) => setData('name', (e as React.ChangeEvent<HTMLInputElement>).target.value)}
                                 required
                                 autoComplete="name"
                                 placeholder="Full name"
                             />
-
                             <InputError className="mt-2" message={errors.name} />
                         </div>
+
                         <div className="grid gap-2">
                             <Label htmlFor="username">Username</Label>
-
                             <Input
                                 id="username"
                                 className="mt-1 block w-full"
-                                value={data.username}
+                                value={data.username ?? ''}
+                                onChange={(e: unknown) => setData('username', (e as React.ChangeEvent<HTMLInputElement>).target.value)}
                                 autoComplete="username"
                                 placeholder="Username"
-                                disabled
                             />
-
-                            <InputError className="mt-2" message={errors.name} />
+                            <InputError className="mt-2" message={errors.username} />
                         </div>
 
                         <div className="grid gap-2">
                             <Label htmlFor="email">Email address</Label>
-
                             <Input
                                 id="email"
                                 type="email"
                                 className="mt-1 block w-full"
-                                value={data.email}
-                                onChange={(e) => setData('email', e.target.value)}
+                                value={data.email ?? ''}
+                                onChange={(e: unknown) => setData('email', (e as React.ChangeEvent<HTMLInputElement>).target.value)}
                                 required
-                                autoComplete="username"
+                                autoComplete="email"
                                 placeholder="Email address"
                             />
-
                             <InputError className="mt-2" message={errors.email} />
                         </div>
+
                         <div className="grid gap-2">
-                            <Label htmlFor="email">Used Referral Code</Label>
+                            <Label htmlFor="phone">Phone Number</Label>
+                            <Input
+                                id="phone"
+                                className="mt-1 block w-full"
+                                value={data.phone}
+                                onChange={(e: unknown) => setData('phone', (e as React.ChangeEvent<HTMLInputElement>).target.value)}
+                                placeholder="Phone number"
+                            />
+                            <InputError className="mt-2" message={errors.phone} />
+                        </div>
 
-                            <Input id="referral" type="text" className="mt-1 block w-full" value={referral_used} disabled />
+                        <div className="grid gap-2">
+                            <Label htmlFor="social_link">Social Link</Label>
+                            <Input
+                                id="social_link"
+                                className="mt-1 block w-full"
+                                value={data.social_link}
+                                onChange={(e: unknown) => setData('social_link', (e as React.ChangeEvent<HTMLInputElement>).target.value)}
+                                placeholder="https://facebook.com/username"
+                            />
+                            <InputError className="mt-2" message={errors.social_link} />
+                        </div>
 
-                            <InputError className="mt-2" message={errors.email} />
+                        <div className="grid gap-2">
+                            <Label htmlFor="referral">Used Referral Code</Label>
+                            <Input id="referral" type="text" className="mt-1 block w-full" value={String(referral_used ?? '')} disabled />
+                            <InputError className="mt-2" message={errors.referral} />
                         </div>
 
                         {mustVerifyEmail && auth.user.email_verified_at === null && (
@@ -115,7 +169,6 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                         Click here to resend the verification email.
                                     </Link>
                                 </p>
-
                                 {status === 'verification-link-sent' && (
                                     <div className="mt-2 text-sm font-medium text-green-600">
                                         A new verification link has been sent to your email address.
@@ -126,7 +179,6 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
                         <div className="flex items-center gap-4">
                             <Button disabled={processing}>Save</Button>
-
                             <Transition
                                 show={recentlySuccessful}
                                 enter="transition ease-in-out"

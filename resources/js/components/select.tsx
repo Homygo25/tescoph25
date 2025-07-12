@@ -10,11 +10,11 @@ import {
 
 interface SelectInputProps {
   placeholder: string;
-  items: { text: string; value: any }[];
+  items: { text: string; value: string | number }[];
   className: string;
-  value: any; // Controlled value prop
-  onChange: (value: any) => void; // Callback to handle value changes
-  disabled: boolean | undefined
+  value: string | number;
+  onChange: (value: string) => void;
+  disabled: boolean | undefined;
 }
 
 export function SelectInput({
@@ -26,14 +26,14 @@ export function SelectInput({
   disabled
 }: SelectInputProps) {
   return (
-    <Select disabled={disabled} value={value} onValueChange={onChange}>
+    <Select disabled={disabled} value={String(value)} onValueChange={onChange}>
       <SelectTrigger className={className}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
           {items.map((item) => (
-            <SelectItem key={item.value} value={item.value}>
+            <SelectItem key={item.value} value={String(item.value)}>
               {item.text}
             </SelectItem>
           ))}

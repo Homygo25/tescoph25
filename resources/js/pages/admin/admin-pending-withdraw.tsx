@@ -2,7 +2,7 @@ import PendingTable, { PENDINGDATATYPE } from '@/components/admin/admin-pending-
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import AppLayout from '@/layouts/app-layout';
-import { Auth, RoleProps, type BreadcrumbItem } from '@/types';
+import { Auth, type BreadcrumbItem } from '@/types';
 import { formattedNumber } from '@/utils/utils';
 import { Head, usePage } from '@inertiajs/react';
 import { useEffect } from 'react';
@@ -18,11 +18,13 @@ const breadcrumbs: BreadcrumbItem[] = [
 interface PageProps {
     APP_DOMAIN: string;
     auth: Auth;
-    [key: string]: any; // Allow additional properties
+    [key: string]: unknown; // Allow additional properties (keep for Inertia compatibility)
     withdraw: PENDINGDATATYPE[];
+    success?: { message?: string };
+    error?: { message?: string };
 }
 
-function totalAmount(array: any[]): number {
+function totalAmount(array: PENDINGDATATYPE[]): number {
     return array.reduce((a, b) => Number(a) + Number(b.amount), 0);
 }
 
@@ -30,20 +32,17 @@ export default function AdminPendingWithdraw() {
     const { auth, data, success, error } = usePage<PageProps>().props;
     console.log({ data });
 
-    function successToast() {
-        return toast.success(success.message);
-    }
-    function errorToast() {
-        return toast.error(error.message);
-    }
-
     useEffect(() => {
-        success?.message && successToast(); //reset input values only if success
-        error?.message && errorToast();
+        if (success?.message) {
+            toast.success(success.message);
+        }
+        if (error && typeof error === 'object' && 'message' in error && typeof error.message === 'string') {
+            toast.error(error.message);
+        }
     }, [success, error]);
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs} role={auth.user.role as RoleProps}>
+        <AppLayout breadcrumbs={breadcrumbs} role={{ role: String(auth.user.role) }}>
             <Head title="Admin Dashboard" />
             <div className="flex h-full flex-1 flex-col items-center gap-y-4 p-4">
                 <div className="w-screen md:w-[calc(100vw-300px)]">
@@ -52,11 +51,11 @@ export default function AdminPendingWithdraw() {
                             <div className="flex items-center justify-between p-4">
                                 <p className="font-semibold">Pending Withdrawals</p>
                                 <Badge className="px-4 py-2 text-sm">
-                                    Total: <b>{formattedNumber(Number(totalAmount(data)))}</b>
+                                    Total: <b>{formattedNumber(Number(totalAmount(data as PENDINGDATATYPE[])))}</b>
                                 </Badge>
                             </div>
                             <Separator orientation="horizontal" />
-                            <PendingTable data={data} />
+                            <PendingTable data={data as PENDINGDATATYPE[]} />
                         </div>
                     </div>
                 </div>

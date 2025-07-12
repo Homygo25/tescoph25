@@ -15,11 +15,14 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+import type { MANAGEUSERSTYPE } from '@/components/admin/admin-manage-users/admin-manage-users-table';
+
 interface PageProps {
     APP_DOMAIN: string;
     auth: Auth;
-    data: any[];
+    data: MANAGEUSERSTYPE[];
     packages: { id: number; package_name: string }[];
+    [key: string]: unknown; // For Inertia compatibility
 }
 
 export default function AdminManageUsers() {
@@ -60,6 +63,7 @@ export default function AdminManageUsers() {
                                 <Label htmlFor="package">Select Package</Label>
                                 <select
                                     id="package"
+                                    title="Select package"
                                     value={packageId}
                                     onChange={(e) => setPackageId(Number(e.target.value))}
                                     className="rounded border p-2"

@@ -1,7 +1,9 @@
 // Swiper styles import for Vite/React
+
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
+import styles from './PackageCarousel.module.css';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow } from 'swiper/modules';
@@ -44,17 +46,15 @@ export default function PackageCarousel({ packages, onSelect }: PackageCarouselP
       pagination={{ clickable: true }}
       modules={[EffectCoverflow, Pagination]}
       onSlideChange={swiper => setActiveIndex(swiper.activeIndex)}
-      className="w-full max-w-xs sm:max-w-md md:hidden"
-      style={{ paddingBottom: 32 }}
+      className={`w-full max-w-xs sm:max-w-md md:hidden ${styles.swiperCustom}`}
     >
       {packages.map((item, idx) => (
         <SwiperSlide key={item.id}>
           <div
-            className={`transition-all duration-300 ${activeIndex === idx ? 'scale-105 shadow-2xl z-10' : 'scale-90 opacity-70 blur-[1.5px] z-0'}`}
+            className={`transition-all duration-300 ${activeIndex === idx ? 'scale-105 shadow-2xl z-10' : 'scale-90 opacity-70 blur-[1.5px] z-0'} ${styles.carouselCard}`}
             onClick={() => onSelect(item)}
-            style={{ cursor: 'pointer' }}
           >
-            <img src={item.image} alt={item.package_name} style={{ borderRadius: 16, width: '100%' }} />
+            <img src={item.image} alt={item.package_name} className={styles.carouselImage} />
             <div className="text-center font-bold mt-2">{item.package_name}</div>
           </div>
         </SwiperSlide>

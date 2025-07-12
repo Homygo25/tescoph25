@@ -23,19 +23,21 @@ export default function ProfileImage() {
 
     console.log('auth', auth);
 
-    const { data, setData, post, errors, reset, processing, recentlySuccessful } = useForm({
+    const { setData, post, reset, processing, recentlySuccessful } = useForm<{ profile_image: File | null }>({
         profile_image: null,
         // profile_image: auth.user.profile_image,
     });
 
-    const [previewImage, setPreviewImage] = useState(auth.user.profile_image ? `/storage/${auth.user.profile_image}` : null);
 
-    const handleImageChange = (e: any) => {
-        setData('image', e.target.files[0]);
-        if (e.target.files[0]) {
-            setPreviewImage(URL.createObjectURL(e.target.files[0]));
+    const [previewImage, setPreviewImage] = useState<string | undefined>(auth.user.profile_image ? `/storage/${auth.user.profile_image}` : undefined);
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files && e.target.files[0];
+        setData('profile_image', file);
+        if (file) {
+            setPreviewImage(URL.createObjectURL(file));
         } else {
-            setPreviewImage(null);
+            setPreviewImage(undefined);
         }
     };
 
@@ -43,8 +45,8 @@ export default function ProfileImage() {
         e.preventDefault();
         post(route('postprofile.image'), {
             onSuccess: () => {
-                reset('image');
-                // setPreviewImage(auth.user.profile_image ? `/storage/${auth.user.profile_image}` : null);
+                reset('profile_image');
+                // setPreviewImage(auth.user.profile_image ? `/storage/${auth.user.profile_image}` : undefined);
                 router.visit(window.location.pathname, {
                     //Reload the full page.
                     replace: true,

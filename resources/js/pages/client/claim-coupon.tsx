@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
-import { Auth, RoleProps, type BreadcrumbItem } from '@/types';
+import { Auth, type BreadcrumbItem } from '@/types';
 import { Head, router, usePage } from '@inertiajs/react';
 import { FormEvent, useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -18,6 +18,7 @@ interface PageProps {
     success?: { message: string };
     error?: { message: string };
     auth: Auth;
+    [key: string]: unknown; // Keep for Inertia compatibility
 }
 
 export default function ClaimCoupon() {
@@ -29,23 +30,18 @@ export default function ClaimCoupon() {
         router.post('/claim-coupon', { coupon: code });
     }
 
-    function successToast() {
-        return toast.success(success!.message);
-    }
-    function errorToast() {
-        return toast.error(error!.message);
-    }
-
     useEffect(() => {
-        if (success?.message) {
-            successToast();
+        if (success && typeof success === 'object' && 'message' in success && typeof success.message === 'string') {
+            toast.success(success.message);
             setCode('');
         }
-        error?.message && errorToast();
+        if (error && typeof error === 'object' && 'message' in error && typeof error.message === 'string') {
+            toast.error(error.message);
+        }
     }, [success, error]);
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs} role={auth.user.role as RoleProps}>
+        <AppLayout breadcrumbs={breadcrumbs} role={{ role: String(auth.user.role) }}>
             <Head title="Claim Coupon" />
             <div className="flex h-full flex-1 flex-col items-center gap-y-4 p-4">
                 <Card className="w-full max-w-[500px] p-4">

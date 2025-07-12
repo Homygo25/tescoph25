@@ -12,8 +12,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 interface PageProps {
     APP_DOMAIN: string;
     auth: Auth;
-    [key: string]: any;
-    data: any[]; // Allow additional properties
+    data: unknown[];
+    [key: string]: unknown;
 }
 
 export default function AdminDashboard() {

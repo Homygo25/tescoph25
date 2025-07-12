@@ -10,10 +10,10 @@
 
 /* Cross-browser text size adjustment support */
 html {
-  text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 /* Improve text rendering and font smoothing */
@@ -32,7 +32,6 @@ body {
   [class*="animate-"] {
     will-change: transform;
   }
-  
   .animate-spin:not(:hover):not(:focus):not(:active) {
     will-change: auto;
   }
@@ -127,9 +126,9 @@ svg {
 }
 
 /* Optimize loading of images */
-img[loading="lazy"] {
-  content-visibility: auto;
-}
+/* img[loading="lazy"] {
+  content-visibility: auto; Removed for Safari iOS compatibility
+} */
 
 /* Print optimizations */
 @media print {

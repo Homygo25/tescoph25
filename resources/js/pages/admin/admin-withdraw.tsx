@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import { Auth, RoleProps, type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -11,8 +11,14 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 interface PageProps {
     APP_DOMAIN: string;
-    auth: Auth;
-    [key: string]: any; // Allow additional properties
+    auth: {
+        user: {
+            role: string;
+            [key: string]: unknown;
+        };
+        [key: string]: unknown;
+    };
+    [key: string]: unknown; // Allow additional properties
 }
 
 export default function AdminWithdraw() {
@@ -20,7 +26,7 @@ export default function AdminWithdraw() {
     console.log(auth.user.role);
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs} role={auth.user.role as RoleProps}>
+        <AppLayout breadcrumbs={breadcrumbs} role={{ role: auth.user.role }}>
             <Head title="Admin Dashboard" />
             AdminWithdraw
         </AppLayout>

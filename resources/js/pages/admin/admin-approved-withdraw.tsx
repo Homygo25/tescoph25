@@ -16,11 +16,11 @@ const breadcrumbs: BreadcrumbItem[] = [
 interface PageProps {
     APP_DOMAIN: string;
     auth: Auth;
-    [key: string]: any; // Allow additional properties
+    [key: string]: unknown; // Allow additional properties
     withdraw: APPROVEDDATATYPE[];
 }
 
-function totalAmount(array: any[]): number {
+function totalAmount(array: APPROVEDDATATYPE[]): number {
     return array.reduce((a, b) => Number(a) + Number(b.amount), 0);
 }
 
@@ -36,11 +36,11 @@ export default function AdminApprovedWithdraw() {
                             <div className="flex items-center justify-between p-4">
                                 <p className="font-semibold">Approved Withdrawals</p>
                                 <Badge className="px-4 py-2 text-sm">
-                                    Total: <b>{formattedNumber(Number(totalAmount(data)))}</b>
+                                    Total: <b>{formattedNumber(Number(totalAmount(data as APPROVEDDATATYPE[])))}</b>
                                 </Badge>
                             </div>
                             <Separator orientation="horizontal" />
-                            <AdminApprovedTable data={data} />
+                            <AdminApprovedTable data={data as APPROVEDDATATYPE[]} />
                         </div>
                     </div>
                 </div>

@@ -20,16 +20,27 @@ export default function IncomeHistory() {
         auth: Auth;
     }>().props;
 
+
     console.log(accountbalance, referral_bonus);
-    function totalAmount(array: any[]) {
-        const accountbalance = array.reduce((a, b) => Number(a) + Number(b.amount), 0);
-        return {
-            accountbalance,
-        };
+    function totalAmount(array: unknown[]): number {
+        return array.reduce((a: number, b: unknown) => {
+            if (typeof b === 'object' && b !== null && 'amount' in b) {
+                return a + Number((b as { amount: number }).amount);
+            }
+            return a;
+        }, 0);
     }
-    function totalAmountReferral(array: any[]): number {
-        return array.reduce((a, b) => Number(a) + Number(b.bonus_amount), 0);
+
+    function totalAmountReferral(array: unknown[]): number {
+        return array.reduce((a: number, b: unknown) => {
+            if (typeof b === 'object' && b !== null && 'bonus_amount' in b) {
+                return a + Number((b as { bonus_amount: number }).bonus_amount);
+            }
+            return a;
+        }, 0);
     }
+
+
 
     return (
         <AppLayout breadcrumbs={breadcrumbs} role={auth.user.role as RoleProps}>
@@ -39,9 +50,12 @@ export default function IncomeHistory() {
                     <div className="">
                         <div className="rounded-md border">
                             <div className="flex items-center justify-between p-4">
-                                <p className="font-semibold">Transfer History</p>
+                                <div>
+                                    <p className="font-semibold">Transfer History</p>
+                                    <p className="text-xs text-gray-500">Total Referral Bonus: <b>{formattedNumber(totalAmountReferral(referral_bonus))}</b></p>
+                                </div>
                                 <Badge className="px-4 py-2 text-sm">
-                                    Total: <b>{formattedNumber(Number(totalAmount(accountbalance).accountbalance))}</b>
+                                    Total: <b>{formattedNumber(totalAmount(accountbalance))}</b>
                                 </Badge>
                             </div>
                             <Separator orientation="horizontal" />

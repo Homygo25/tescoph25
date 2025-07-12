@@ -3,20 +3,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import AppLayout from '@/layouts/app-layout';
-import { Auth, RoleProps, type BreadcrumbItem } from '@/types';
+import DashboardLayout from '@/layouts/DashboardLayout';
 import { formattedNumber } from '@/utils/utils';
 import { Head, router, usePage } from '@inertiajs/react';
 import { Info } from 'lucide-react';
 import { FormEvent, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Withdraw',
-        href: '/dashboard',
-    },
-];
+
 
 type PageProps = {
     success: {
@@ -25,12 +19,11 @@ type PageProps = {
     error: {
         message: string;
     };
-    auth: Auth;
     account_balance: number;
 };
 
 export default function Withdraw() {
-    const { auth, account_balance, success, error, bank_details } = usePage<PageProps>().props;
+    const { account_balance, success, error, bank_details } = usePage<PageProps>().props;
     const [amount, setAmount] = useState<string>('');
 
     function handleSubmit(e: FormEvent) {
@@ -49,16 +42,14 @@ export default function Withdraw() {
     }
     // console.log(account_balance);
 
-    function successToast() {
-        return toast.success(success.message);
-    }
-    function errorToast() {
-        return toast.error(error.message);
-    }
 
     useEffect(() => {
-        success?.message && successToast();
-        error?.message && errorToast();
+        if (success?.message) {
+            toast.success(success.message);
+        }
+        if (error?.message) {
+            toast.error(error.message);
+        }
     }, [success, error]);
 
     function handleAmountChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -70,7 +61,7 @@ export default function Withdraw() {
         }
     }
     return (
-        <AppLayout breadcrumbs={breadcrumbs} role={auth.user.role as RoleProps}>
+        <DashboardLayout>
             <Head title="Dashboard" />
             <div className="flex h-full flex-1 flex-col items-center gap-y-4 p-4">
                 <Card className="w-full max-w-[650px]">
@@ -98,6 +89,6 @@ export default function Withdraw() {
                 </Card>
                 <NoBankDialog open={!bank_details} />
             </div>
-        </AppLayout>
+        </DashboardLayout>
     );
 }

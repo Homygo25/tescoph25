@@ -25,7 +25,14 @@ export type PENDINGDATATYPE = {
     status: string;
 };
 
-const PendingTab = ({ data, receiving_banks }: { data: PENDINGDATATYPE[] }) => {
+type ReceivingBank = {
+    id: number;
+    bank_name: string;
+    account_number: string;
+    [key: string]: unknown;
+};
+
+const PendingTab = ({ data, receiving_banks }: { data: PENDINGDATATYPE[]; receiving_banks: ReceivingBank[] }) => {
     const columns: ColumnDef<PENDINGDATATYPE>[] = [
         {
             accessorKey: 'package_name',
@@ -55,8 +62,8 @@ const PendingTab = ({ data, receiving_banks }: { data: PENDINGDATATYPE[] }) => {
         },
     ];
 
-    const getBankDetails = (id, bankList) => {
-        const bank = bankList.find((bank) => bank.id === id);
+    const getBankDetails = (id: number, bankList: ReceivingBank[]) => {
+        const bank = bankList.find((bank: ReceivingBank) => bank.id === id);
         return bank ? `${bank.bank_name}: ${bank.account_number}` : 'Bank not found';
     };
 

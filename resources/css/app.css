@@ -1,3 +1,129 @@
+@import './alex-brush.css';
+/* Cross-browser, cleaner base styles */
+html {
+  -webkit-text-size-adjust: 100%; /* Safari/Chrome/iOS */
+  -ms-text-size-adjust: 100%;     /* IE10+ */
+  text-size-adjust: 100%;         /* Modern browsers */
+}
+
+[data-sonner-toast][data-swiped="true"] {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.swiper-css-mode > .swiper-wrapper {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.swiper-css-mode > .swiper-wrapper::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+/* Dashboard Deposit/Withdraw button styles */
+.dashboard-btn-solid {
+  min-width: 120px;
+  background-color: #e50914;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgba(229,9,20,0.10);
+  transition: background 0.2s;
+  outline: none;
+  border: none;
+}
+.dashboard-btn-solid:hover, .dashboard-btn-solid:focus {
+  background-color: #b8001c;
+}
+.dashboard-btn-outline {
+  min-width: 120px;
+  background: #fff;
+  color: #e50914;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  border: 1.5px solid #e50914;
+  transition: background 0.2s;
+  outline: none;
+}
+.dashboard-btn-outline:hover, .dashboard-btn-outline:focus {
+  background: #fff0f0;
+}
+/* Auth background for login and auth pages */
+.auth-bg {
+  background-image: url('/images/cvs-pharmacy-bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+/* Package page image container and overlay styles */
+.package-img-container {
+  position: relative;
+  width: 100%;
+}
+.package-img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 16px;
+}
+.package-img-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.65);
+  color: #fff;
+  padding: 10px 8px 8px 8px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  font-weight: bold;
+  font-size: 0.98rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-start;
+}
+.package-select-btn {
+  background: #b8001c;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(184,0,28,0.10);
+  transition: background 0.2s;
+}
+.package-select-btn:hover {
+  background: #a00018;
+}
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 2px 8px rgba(184,0,28,0.10); }
+  50% { transform: scale(1.03); box-shadow: 0 4px 16px rgba(184,0,28,0.18); }
+  100% { transform: scale(1); box-shadow: 0 2px 8px rgba(184,0,28,0.10); }
+}
+.pulse-select-btn {
+  animation: pulse 2.5s infinite;
+}
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+.cvs-float-img {
+  animation: float 3.5s ease-in-out infinite;
+}
+/* Max width for CVS logo on welcome page */
+.cvs-logo-maxwidth {
+  max-width: 320px;
+}
+/* Hero background for hero3d page */
+.hero3d-bg {
+  background-image: url('/images/cvs-pharmacy-bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 @import 'tailwindcss';
 
 /* @plugin and @source are not standard CSS, remove for IDE compatibility. */
@@ -21,10 +147,10 @@
   
   /* Cross-browser text size adjustment support */
   html {
-    text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
     -moz-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
   
   /* Improve text rendering */

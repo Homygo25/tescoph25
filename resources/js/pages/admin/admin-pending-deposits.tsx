@@ -2,7 +2,7 @@ import PendingTable, { PENDINGDATATYPE } from '@/components/admin/admin-pending-
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import AppLayout from '@/layouts/app-layout';
-import { Auth, RoleProps, type BreadcrumbItem } from '@/types';
+import { Auth, type BreadcrumbItem } from '@/types';
 import { formattedNumber } from '@/utils/utils';
 import { Head, usePage } from '@inertiajs/react';
 
@@ -16,11 +16,11 @@ const breadcrumbs: BreadcrumbItem[] = [
 interface PageProps {
     APP_DOMAIN: string;
     auth: Auth;
-    [key: string]: any; // Allow additional properties
+    [key: string]: unknown; // Allow additional properties
     deposits: PENDINGDATATYPE[];
 }
 
-function totalAmount(array: any[]): number {
+function totalAmount(array: PENDINGDATATYPE[]): number {
     return array.reduce((a, b) => Number(a) + Number(b.amount), 0);
 }
 
@@ -28,7 +28,7 @@ export default function AdminPendingDeposits() {
     const { auth, deposits } = usePage<PageProps>().props;
     console.log(deposits);
     return (
-        <AppLayout breadcrumbs={breadcrumbs} role={auth.user.role as RoleProps}>
+        <AppLayout breadcrumbs={breadcrumbs} role={{ role: String(auth.user.role) }}>
             <Head title="Admin Dashboard" />
             <div className="flex h-full flex-1 flex-col items-center gap-y-4 p-4">
                 <div className="w-screen md:w-[calc(100vw-300px)]">

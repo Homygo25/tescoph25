@@ -19,7 +19,7 @@ interface PageProps {
   APP_DOMAIN: string;
   auth: Auth;
   deposits: REQUESTFUNDPENDINGDATATYPE[];
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 function totalAmount(array: REQUESTFUNDPENDINGDATATYPE[]): number {

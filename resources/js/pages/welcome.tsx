@@ -1,6 +1,6 @@
 
 import React from 'react';
-import CVSLogo from './cvslogo';
+
 
 // TypewriterText must be declared outside the component
 /**
@@ -58,8 +58,7 @@ export default function Welcome() {
             <img
                 src="/logoCvs.png"
                 alt="CVS Logo"
-                className="h-40 mb-4 animate-fade-in-up logo-glow"
-                style={{ maxWidth: 320 }}
+                className="h-40 mb-4 animate-fade-in-up logo-glow cvs-logo-maxwidth"
             />
             {/* Tagline (typewriter effect) */}
             <h1 id="tagline" className="text-2xl font-semibold text-gray-700 animate-fade-in-up delay-200"></h1>

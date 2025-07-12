@@ -23,8 +23,8 @@ export default function DepositHistory() {
     }>().props;
     console.log(receiving_banks);
 
-    function totalAmount(array: any[]): number {
-        return array.reduce((a, b) => Number(a) + Number(b.amount), 0);
+    function totalAmount(array: { amount: number }[]): number {
+        return array.reduce((a, b) => a + b.amount, 0);
     }
 
     return (
@@ -63,7 +63,7 @@ export default function DepositHistory() {
                                         </Badge>
                                     </div>
                                     <Separator orientation="horizontal" />
-                                    <PendingTab data={pending} receiving_banks={receiving_banks} />
+                                    <PendingTab data={pending} receiving_banks={receiving_banks as any} />
                                 </div>
                             </div>
                         </div>

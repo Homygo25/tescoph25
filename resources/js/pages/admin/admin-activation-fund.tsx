@@ -40,12 +40,12 @@ type PageProps = {
     }[];
 };
 
-function totalAmount(array: any[]): number {
+function totalAmount(array: { transfer_amount: number }[]): number {
     return array.reduce((a, b) => Number(a) + Number(b.transfer_amount), 0);
 }
 
 export default function AdminActivationFund() {
-    const { auth, account_balance, sent_transactions, received_transactions, success, error } = usePage<PageProps>().props;
+    const { auth, sent_transactions, received_transactions, success } = usePage<PageProps>().props;
     const [receiver, setReceiver] = useState('');
     const [amount, setAmount] = useState<number | string>('');
 
@@ -53,21 +53,18 @@ export default function AdminActivationFund() {
     // console.log('success', success);
     // console.log('error', error);
 
-    function successToast() {
-        return toast.success(success.message);
-    }
-    function errorToast() {
-        return toast.error(error.message);
-    }
 
     useEffect(() => {
-        success?.message && (successToast(), setReceiver(''), setAmount(null)); //reset input values only if success
-        error?.message && errorToast();
-    }, [success, error]);
+        if (success?.message) {
+            toast.success(success.message);
+            setReceiver('');
+            setAmount('');
+        }
+    }, [success]);
 
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
-        const res = router.post('/posttransfer-fund', {
+        router.post('/posttransfer-fund', {
             name: receiver,
             transfer_amount: amount,
         });
