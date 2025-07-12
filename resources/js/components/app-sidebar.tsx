@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     AlignLeft,
     ArrowBigDown,
@@ -163,6 +163,14 @@ const footerNavItems: NavItem[] = [
 
 export function AppSidebar({ role }: any) {
     const [open, setOpen] = useState(false);
+
+    // Listen for 'openSidebar' event from anywhere (e.g., dashboard home button)
+    useEffect(() => {
+        const handler = () => setOpen(true);
+        window.addEventListener('openSidebar', handler);
+        return () => window.removeEventListener('openSidebar', handler);
+    }, []);
+
     // Show sidebar always on desktop, toggle on mobile
     return (
         <>
@@ -220,7 +228,6 @@ export function AppSidebar({ role }: any) {
                                         title: 'Dashboard',
                                         url: '/dashboard',
                                         icon: LayoutGrid,
-                                        onClick: () => setOpen(true),
                                     },
                                     { title: 'CVS Profile', url: '/profile', icon: TypeOutline },
                                 ]}
@@ -273,3 +280,4 @@ export function AppSidebar({ role }: any) {
         </>
     );
 }
+

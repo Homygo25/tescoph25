@@ -72,7 +72,16 @@ export default function Package() {
     if (pkg === null || pkg.id === 0) {
       setOpen(false);
     } else {
-      setSelectedPackage(pkg);
+      // Find the image for the selected package
+      const image =
+        pkg.package_name === 'Package 1' || pkg.package_name === 'Basic'
+          ? '/packages/CVS-Package-1.png'
+          : pkg.package_name === 'Package 2' || pkg.package_name === 'Advance'
+          ? '/packages/CVS-Package-2.png'
+          : pkg.package_name === 'Package 3' || pkg.package_name === 'Elite'
+          ? '/packages/CVS-Package-3.png'
+          : '/packages/CVS-Package-1.png';
+      setSelectedPackage({ ...pkg, image });
       setOpen(true);
     }
   }

@@ -37,7 +37,7 @@ export default function Welcome() {
         if (!el) return;
         el.innerHTML = "";
         function typeWriter() {
-            if (i < tagline.length) {
+            if (i < tagline.length && el) {
                 el.innerHTML += tagline.charAt(i);
                 i++;
                 setTimeout(typeWriter, 40);

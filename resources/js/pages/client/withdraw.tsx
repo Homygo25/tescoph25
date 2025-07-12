@@ -31,7 +31,7 @@ type PageProps = {
 
 export default function Withdraw() {
     const { auth, account_balance, success, error, bank_details } = usePage<PageProps>().props;
-    const [amount, setAmount] = useState();
+    const [amount, setAmount] = useState<string>('');
 
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
