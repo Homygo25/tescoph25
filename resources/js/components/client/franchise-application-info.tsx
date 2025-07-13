@@ -61,7 +61,7 @@ export default function FranchiseApplication() {
         {/* CALL TO ACTION */}
         <div className="text-center mt-10">
           <Link
-            href="/franchise/apply"
+            href="/franchise-application"
             className="inline-block px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-full shadow-md transition duration-200"
           >
             🖊️ Start Application
