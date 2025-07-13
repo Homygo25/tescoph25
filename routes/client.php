@@ -4,7 +4,6 @@ use App\Http\Controllers\AppForm\AppFormController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Deposit\DepositController;
 use App\Http\Controllers\DepositHistory\DepositHistoryController;
-use App\Http\Controllers\FranchiseApplication\FranchiseController;
 use App\Http\Controllers\Income\IncomeController;
 use App\Http\Controllers\Referral\ReferralController;
 use App\Http\Controllers\RequestFund\RequestFundController;
