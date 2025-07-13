@@ -172,6 +172,9 @@ export function AppSidebar({ role }: any) {
     }, []);
 
     // Show sidebar always on desktop, toggle on mobile
+    // Render admin or client menu based on role
+    const isAdmin = role === 'admin';
+    const navItems = isAdmin ? AdminmainNavItems : ClientmainNavItems;
     return (
         <>
             {/* Hamburger for mobile */}
@@ -219,58 +222,7 @@ export function AppSidebar({ role }: any) {
                     </Link>
                 </div>
                 <div className="sidebar-content flex-grow-1 overflow-auto px-2 pt-3">
-                    <div className="mb-4">
-                        <div className="fw-bold text-uppercase small text-muted mb-2">My Account</div>
-                        <div data-intro="profile">
-                            <NavMain
-                                items={[
-                                    {
-                                        title: 'Dashboard',
-                                        url: '/dashboard',
-                                        icon: LayoutGrid,
-                                    },
-                                    { title: 'CVS Profile', url: '/profile', icon: TypeOutline },
-                                ]}
-                            />
-                        </div>
-                    </div>
-                    <div className="mb-4">
-                        <div className="fw-bold text-uppercase small text-muted mb-2">Financial</div>
-                        <NavMain items={[
-                            { title: 'Deposit', url: '/deposit', icon: Package },
-                            { title: 'Withdraw', url: '/withdraw', icon: CreditCard },
-                            { title: 'Transfer Fund', url: '/transfer-fund', icon: WalletCards },
-                            { title: 'Request Fund', url: '/request-fund', icon: FileInput },
-                        ]} />
-                    </div>
-                    <div className="mb-4">
-                        <div className="fw-bold text-uppercase small text-muted mb-2">Opportunities</div>
-                        <div data-intro="franchise-menu">
-                            <NavMain items={[
-                                { title: 'Franchise Application', url: '/franchise-application', icon: Store },
-                            ]} />
-                        </div>
-                        <div data-intro="cvs-credit">
-                            <NavMain items={[
-                                { title: 'CVS Credit Application', url: '/credit-application', icon: IdCard },
-                            ]} />
-                        </div>
-                    </div>
-                    <div className="mb-4">
-                        <div className="fw-bold text-uppercase small text-muted mb-2">Reports</div>
-                        <NavMain items={[
-                            { title: 'Transaction History', url: '/transaction-history', icon: ArrowBigDown, children: [
-                                { title: 'Income', url: '/income-history', icon: Plus },
-                                { title: 'Deposit', url: '/deposit-history', icon: ArrowBigDown },
-                                { title: 'Withdrawal', url: '/withdraw-history', icon: AlignLeft },
-                            ] },
-                        ]} />
-                        <div data-intro="referrals">
-                            <NavMain items={[
-                                { title: 'Referrals', url: '/referrals', icon: Users },
-                            ]} />
-                        </div>
-                    </div>
+                    <NavMain items={navItems} />
                 </div>
                 <div className="sidebar-footer mt-auto p-2 border-top">
                     <NavFooter items={footerNavItems} />

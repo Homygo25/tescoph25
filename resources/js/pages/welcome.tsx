@@ -53,7 +53,7 @@ export default function Welcome() {
     }, []);
 
     return (
-        <div className="min-h-screen flex flex-col justify-center items-center bg-white px-6 text-center">
+        <div className="hero-bg min-h-screen flex flex-col justify-center items-center px-6 text-center">
             {/* Logo with soft pulse glow */}
             <img
                 src="/logoCvs.png"
