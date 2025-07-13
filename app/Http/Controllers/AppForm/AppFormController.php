@@ -20,7 +20,7 @@ class AppFormController extends Controller
         ]);
     }
 
-    public function index_Credit()
+    public function index_credit()
     {
         return Inertia::render('client/app-form', [
             'type' => 'credit',
